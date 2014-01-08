@@ -10,7 +10,7 @@ enum TokenType
 class Token
 {
 public:
-    Token();
+    Token(TokenType _type, QString _value);
     void SetTokenType(TokenType newType);
     void SetTokenValue(QString newValue);
 private:

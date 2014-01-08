@@ -1,7 +1,9 @@
 #include "token.h"
 
-Token::Token()
+Token::Token(TokenType _type, QString _value)
 {
+    type = _type;
+    value = _value;
 }
 
 void Token::SetTokenType(TokenType newType)
