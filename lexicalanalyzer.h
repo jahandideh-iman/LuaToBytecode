@@ -2,36 +2,48 @@
 #define LEXICALANALYZER_H
 
 #include <QFile>
+#include <string>
+#include "Token.h"
+#include "BaseObject.h"
 
-enum ELexState
-{
-    LexState_Initial, LexState_Identifier , LexState_Number
-};
+
+using namespace std;
+
+class BaseObject;
+
+typedef void (BaseObject::*InsertTokenHandler)(Token*);
+
+#define InsertTokenSelector(_SELECTOR) (InsertTokenHandler)(&_SELECTOR)
+
+
+#define CALL_MEMBER_FN(object,ptrToMember)  ((object)->*(ptrToMember))
 
 class LexicalAnalyzer
 {
 public:
     LexicalAnalyzer();
+    //void StartLexingWithFile(QFile* file);
+    void StartLexing(QString fileName);
 
-    void StartLexingWithFile(QFile* file);
-    void StartLexing();
+    static void SetTokenInsertHandler(BaseObject *main, InsertTokenHandler handler);
+
+    static void InsertToken(ETokenType type, string value);
+    static Token* CreateToken(ETokenType type, string value);
 
 
 private:
-    ELexState lexState;
+    static BaseObject* recieverObj;
+    static InsertTokenHandler insertTokenHandler;
+    static bool bHasInstance;
+
+    static bool HasInstance();
+
+    void SetHasInstnace();
     QFile* sourceFile;
     QChar currentChar;
 
-    void SetLexState(ELexState newState);
 
-    bool IsWhiteSpace(QChar c);
-    bool IsAlphabet(QChar c);
-    bool IsDigit (QChar c);
 
-    void ProcessLexState_Initial();
-    void ProcessLexState_Identifier();
-
-    void Fail();
 };
 
 #endif // LEXICALANALYZER_H
