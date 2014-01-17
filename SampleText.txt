@@ -1,0 +1,51 @@
+-- Single Line Comment
+
+
+
+
+function factorial(n)
+  local x = 1
+  for i = 2,n do
+    x = x * i
+  end
+  return x
+end
+
+--condition = true
+ 
+while condition do
+  --statements
+end
+ 
+repeat
+  --statements
+until condition
+ 
+for i = first,last,delta do     --delta may be negative, allowing the for loop to count down or up
+  print(i)
+end
+
+for key, value in pairs(_G) do
+  print(key, value)
+end
+
+do
+  local oldprint = print   -- Store current print function as oldprint
+  function print(s)        -- Redefine print function, the usual print function can still be used
+    if s == "foo" then
+      oldprint("bar")
+    else
+      oldprint(s)
+    end
+  end
+end
+
+Point = {}
+ 
+Point.new = function(x, y)
+  return {x = x, y = y}
+end
+ 
+Point.set_x = function(point, x)
+  point.x = x
+end
