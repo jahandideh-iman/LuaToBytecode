@@ -69,11 +69,11 @@
 
 %%
 
-	chunk : block						{qDebug("chunk");}
+	chunk : {qDebug("chunk");} block						
 		;
 
-	semi : Token_Semicolon				{qDebug("semi");}
-		| Token_Dot						{qDebug("semi");}
+	semi : 							{qDebug("semi");}
+		| Token_Semicolon			{qDebug("semi");}
 		; 
 
 	block : scope statlist				{qDebug("block");}
