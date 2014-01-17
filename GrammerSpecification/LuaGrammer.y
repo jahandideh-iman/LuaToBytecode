@@ -16,7 +16,7 @@
 %token Token_IntNumber
 %token Token_FloatNumber
 %token Token_String
-%token Token_And
+%left Token_And
 %token Token_Break
 %token Token_Do
 %token Token_Else
@@ -29,27 +29,27 @@
 %token Token_In
 %token Token_Local
 %token Token_Nil
-%token Token_Not
-%token Token_Or
+%right Token_Not
+%left Token_Or
 %token Token_Repeat
 %token Token_Return
 %token Token_Then
 %token Token_True
 %token Token_Until
 %token Token_While
-%token Token_Plus
-%token Token_Minus
-%token Token_Asterisk
-%token Token_Slash
-%token Token_Percent
-%token Token_Caret
-%token Token_NumberSign
-%token Token_Equal
-%token Token_NotEqual
-%token Token_LesserEqual
-%token Token_GreaterEqual
-%token Token_Lesser
-%token Token_Greater
+%left Token_Plus
+%left Token_Minus
+%left Token_Asterisk
+%left Token_Slash
+%left Token_Percent
+%right Token_Caret
+%right Token_NumberSign
+%left Token_Equal
+%left Token_NotEqual
+%left Token_LesserEqual
+%left Token_GreaterEqual
+%left Token_Lesser
+%left Token_Greater
 %token Token_Assign
 %token Token_LeftParen
 %token Token_RightParen
@@ -61,161 +61,193 @@
 %token Token_Colon
 %token Token_Comma
 %token Token_Dot
-%token Token_Concat
+%right Token_Concat
 %token Token_Varag
 
 
 
 
 %%
-	chunk: block 
+
+	chunk : block						{qDebug("chunk");}
 		;
 
-	block : stats
-		| stats retstat
+	semi : Token_Semicolon				{qDebug("semi");}
+		| Token_Dot						{qDebug("semi");}
+		; 
+
+	block : scope statlist				{qDebug("block");}
+		| scope statlist laststat semi	{qDebug("block");}
 		;
 
-	stats : 
-		|stat stats
+	unblock : block Token_Until exp		{qDebug("unblock");}
 		;
 
-	stat : Token_Semicolon 
-		| varlist Token_Assign explist
-		| functioncall
-		| label
-		| Token_Break
-		| Token_Do block Token_End
-		| Token_Repeat block Token_Until exp
-		| IfStat
-		| Token_For name Token_Assign forexp Token_Do block Token_End
-		| Token_For namelist Token_In explist Token_Do block TokenEnd
-		| Token_Function funcname funcbody
-		| Token_Local Token_Function name funcbody
-		| Token_Local namelist 
-		| Token_Local namelist Token_Assign explist
+	scope :								{qDebug("scope");}
+		| scope statlist binding semi	{qDebug("scope");}
 		;
 
-	retstat : Token_Return
-		| Token_Return Token_Semicolon
+	statlist :							{qDebug("statlist");}
+		| statlist stat semi			{qDebug("statlist");}
 		;
 
-	funcname : names
-		| names Token_Colon name
+	stat : Token_Do block Token_End							{qDebug("stat");}
+		| Token_While exp Token_Do block Token_End			{qDebug("stat");}
+		| repetition Token_Do block Token_End				{qDebug("stat");}
+		| Token_Repeat unblock								{qDebug("stat");}
+		| Token_If conds Token_End							{qDebug("stat");}
+		| Token_Function funcname funcbody					{qDebug("stat");}
+		| setlist Token_Assign explist1						{qDebug("stat");}
+		| functioncall										{qDebug("stat");}
 		;
 
-	varlist : var
-		| var Token_Comma varlist
+	repetition : Token_For name Token_Assign explist23		{qDebug("repetition");}
+		| Token_For namelist Token_In explist1				{qDebug("repetition");}
 		;
 
-	var : name
-		| prefixexp Token_LeftBrack exp Token_RightBrak 
-		| prefixexp Token_Dot name
+	conds : condlist
+		| condlist Token_Else block
 		;
 
-	namelist : name
-		| name Token_Comma namelist
+	condlist : cond
+		| condlist Token_ElseIf cond
 		;
 
-	explist : exp
-		| exp Token_Comma explist
+	cond : exp Token_Then block
 		;
 
-	exp : Token_Nil 
-		| Token_False 
-		| Token_True 
-		| number
-		| Token_String
-		| Token_Varag
-		| functiondef
-		| prefixexp
-		| tableconstructor
-		| exp binop exp
-		| unop exp
+	laststat : Token_Break				{qDebug("laststat");}
+		| Token_Return					{qDebug("laststat");}
+		| Token_Return explist1			{qDebug("laststat");}
 		;
 
-	prefixexp : var 
-		| functioncall
-		| Token_LeftParen exp Token_RightParen
+	binding : Token_Local namelist							{qDebug("binding");}
+		| Token_Local namelist Token_Assign explist1		{qDebug("binding");}
+		| Token_Local Token_Function name funcbody			{qDebug("binding");}
 		;
 
-	functioncall : prefixexp args
-		| prefixexp Token_Colon  name args
+	funcname : dottedname
+		| dottedname Token_Colon name
 		;
 
-	args : Token_LeftParen Token_RightParen
-		| Token_LeftParen explist Token_RightParen
-		| tableconstructor
-		| Token_String
+	dottedname : name						{qDebug("dottedName");}
+		| dottedname Token_Dot name			{qDebug("dottedName");}
 		;
 
-	functiondef : Token_Function funcbody
+	namelist : name							{qDebug("namelist");}
+		| namelist Token_Comma name			{qDebug("namelist");}
 		;
 
-	funcbody : Token_LeftParen Token_RightParen block Token_End
-		| Token_LeftParen parlist Token_RightParen block Token_End
+	explist1 : exp							{qDebug("explist1");}
+		| explist1 Token_Comma exp			{qDebug("explist1");}
 		;
 
-	parlist : namelist 
-		| namelist Token_Comma Token_Varag 
-		| namelist Token_Varag
+	explist23 : exp Token_Comma exp					{qDebug("explist23");}
+		| exp Token_Comma exp Token_Comma exp		{qDebug("explist23");}
 		;
 
-	tableconstructor : Token_LeftBrace Token_RightBrace
-		| Token_LeftBrace fieldlist Token_RightBrace
 
-	fieldlist : field
-		|	field fields
-		| field fieldsep
-		| field fields fieldsep
+	exp : Token_Nil				{qDebug("exp");} 
+		| Token_True			{qDebug("exp");} 
+		| Token_False			{qDebug("exp");} 
+		| number				{qDebug("exp");} 
+		| Token_String			{qDebug("exp");} 
+		| Token_Varag			{qDebug("exp");} 
+		| function				{qDebug("exp");} 
+		| prefixexp				{qDebug("exp");} 
+		| tableconstructor		{qDebug("exp");} 
+		| exp binop exp			{qDebug("exp");} 
+		| uniop exp				{qDebug("exp");} 
 		;
 
-	fields : fieldsep field
-		| fieldsep field fields
+	setlist : var						{qDebug("setlist");} 
+		| setlist Token_Comma var		{qDebug("setlist");} 
 		;
 
-	field : Token_LeftBrack exp Token_RightBrack Token_Assign exp
-		| name Token_Assign exp
-		| exp
-
-	fieldsep : Token_Comma
-		| Token_Semicolon
+	var : name														{qDebug("var");} 
+		| prefixexp Token_LeftBrack exp Token_RightBrack			{qDebug("var");}
+		| prefixexp Token_Dot name									{qDebug("var");}
 		;
 
-	binop : Token_Plus 
-		| Token_Minus 
-		| Token_Asterisk
-		| Token_Slash
-		| Token_Caret
-		| Token_Percent
-		| Token_Concat
-		| Token_Lesser
-		| Token_LesserEqual
-		| Token_Greater
-		| Token_GreaterEqual
-		| Token_Equal
-		| Token_NotEqual
-		| Token_And
-		| Token_Or
+	prefixexp : var										{qDebug("prefixexp");}
+		| functioncall									{qDebug("prefixexp");}
+		| Token_LeftParen exp Token_RightParen			{qDebug("prefixexp");}
 		;
 
-	unop : Token_Minus 
-		| Token_Not
-		| Token_NumberSign
+	functioncall : prefixexp args						{qDebug("functioncall");}
+		| prefixexp Token_Colon name args				{qDebug("functioncall");}
 		;
 
-	number : Token_IntNumber
-		| Token_FloatNumber
+	args : Token_LeftParen Token_RightParen					{qDebug("args");}
+		| Token_LeftParen explist1 Token_RightParen			{qDebug("args");}
+		| tableconstructor									{qDebug("args");}	
+		| Token_String										{qDebug("args");}
 		;
 
-	forexp : exp Token_Comma exp
-		|  exp Token_Comma exp Token_Comma exp
+	function : Token_Function funcbody						{qDebug("function");}
 		;
 
-	names : name
-		| name Token_Dot names
+	funcbody : params block Token_End						{qDebug("funcbody");}
 		;
-	name : Token_Identifier
+
+	params : Token_LeftParen parlist Token_RightParen		{qDebug("params");}
 		;
+
+	parlist :									{qDebug("parlist");}		
+		| namelist								{qDebug("parlist");}
+		| Token_Varag							{qDebug("parlist");}
+		| namelist Token_Comma Token_Varag		{qDebug("parlist");}
+		;
+
+	tableconstructor : Token_LeftBrace Token_RightBrace				{qDebug("tableconstructor");}		
+		| Token_LeftBrace fieldlist Token_RightBrace				{qDebug("tableconstructor");}
+		| Token_LeftBrace fieldlist fieldsep Token_RightBrace		{qDebug("tableconstructor");}
+		;
+
+	fieldlist : field						{qDebug("fieldlist");}
+		| fieldlist fieldsep field			{qDebug("fieldlist");}
+		;
+
+	fieldsep : Token_Comma				{qDebug("fieldsep");}
+		| Token_Semicolon				{qDebug("fieldsep");}
+		;
+
+	field : exp															{qDebug("field");}
+		| name Token_Assign exp											{qDebug("field");}
+		| Token_LeftBrack exp Token_RightBrack Token_Assign exp			{qDebug("field");}
+		;
+
+	binop : Token_Plus				{qDebug("binop");}
+		| Token_Minus				{qDebug("binop");}
+		| Token_Asterisk			{qDebug("binop");}
+		| Token_Slash				{qDebug("binop");}
+		| Token_Caret				{qDebug("binop");}
+		| Token_Percent				{qDebug("binop");}
+		| Token_Concat				{qDebug("binop");}
+		| Token_Lesser				{qDebug("binop");}
+		| Token_LesserEqual			{qDebug("binop");}
+		| Token_Greater				{qDebug("binop");}
+		| Token_GreaterEqual		{qDebug("binop");}
+		| Token_Equal				{qDebug("binop");}
+		| Token_NotEqual			{qDebug("binop");}
+		| Token_And					{qDebug("binop");}
+		| Token_Or					{qDebug("binop");}
+		;
+
+	uniop : Token_Minus				{qDebug("uniop");}
+		| Token_Not					{qDebug("uniop");}
+		| Token_NumberSign			{qDebug("uniop");}
+		;
+
+	number : Token_IntNumber		{qDebug("number");}
+		| Token_FloatNumber			{qDebug("number");}
+		;
+
+	name : Token_Identifier			{qDebug("name");}
+		;
+
+
+
 
 	
 %%
@@ -224,7 +256,7 @@
 
 int GetNextToken()
 {
-	qDebug("Get Next Token");
+	//qDebug("Get Next Token");
 	
 	return CompilerMain::GetSharedCompiler()->GetNextToken();
 }

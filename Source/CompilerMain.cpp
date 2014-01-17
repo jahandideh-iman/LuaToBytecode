@@ -31,7 +31,7 @@ void CompilerMain::InsertToken(Token *token)
 
 int CompilerMain::GetNextToken()
 {
-	qDebug()<<("Get Next Token");
+	//qDebug()<<("Get Next Token");
 	Token* token = tokenList->at(nextTokenIndex);
     nextTokenIndex++;
     return token->GetType();
