@@ -5,9 +5,14 @@
 #include "BaseObject.h"
 #include "LexicalAnalyzer.h"
 #include "SyntaxanAlyzer.h"
+#include "ParserTokens.h"
 #include <QtDebug>
 #include "Token.h"
 #include "QVector"
+#include "SymbolTable.h"
+#include "qfile.h"
+#include "qtextstream.h"
+
 
 
 
@@ -23,15 +28,27 @@ public:
 
 	
     void InsertToken(Token* token);
-    int GetNextToken();
+    int GetNextToken( );
 
     static CompilerMain* GetSharedCompiler();
+
+	void EmitLine(std::string line);
+
+	void AddScope();
+
+	void AddEntry(QString name,SymbolType type);
+
+	int FindVariableIndexInTable(YYSTYPE idName);
 	
 
 private:
     QVector<Token*>* tokenList;
     LexicalAnalyzer* lexicalAnalyzer;
     SyntaxAnalyzer* syntaxAnalyzer;
+
+	int nextIDIndex;
+	QFile * output;
+	QTextStream * outStream;
 
     void InitialLexicalAnalyzer();
     void InitialSyntaxAnalyzer();
@@ -42,6 +59,8 @@ private:
     static CompilerMain* sharedCompiler;
 
     int nextTokenIndex;
+
+	SymbolTable* currentScope;
 
 
 

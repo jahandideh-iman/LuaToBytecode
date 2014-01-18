@@ -1,9 +1,12 @@
 #ifndef SYNTAXANALYZER_H
 #define SYNTAXANALYZER_H
 
-#include "Token.h"
+#include "ParserTokens.h"
 #include "QDebug"
 #include "CompilerMain.h"
+#include <string>
+#include "SymbolTable.h"
+
 
 class CompilerMain;
 class SyntaxAnalyzer

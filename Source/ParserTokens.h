@@ -32,6 +32,14 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
+/* "%code requires" blocks.  */
+
+
+#include <string>
+#define YYSTYPE std::string
+
+
+
 
 /* Tokens.  */
 #ifndef YYTOKENTYPE
@@ -95,5 +103,14 @@
 #endif
 
 
+
+#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
+typedef int YYSTYPE;
+# define YYSTYPE_IS_TRIVIAL 1
+# define yystype YYSTYPE /* obsolescent; will be withdrawn */
+# define YYSTYPE_IS_DECLARED 1
+#endif
+
+extern YYSTYPE yylval;
 
 

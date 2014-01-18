@@ -1904,3 +1904,5 @@ void LexicalAnalyzer::SetHasInstnace()
 {
     bHasInstance = true;
 }
+
+
