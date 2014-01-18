@@ -12,8 +12,10 @@
 #include "SymbolTable.h"
 #include "qfile.h"
 #include "qtextstream.h"
+#include "qstack.h"
 
-
+#define TEMPNAME "$TEMP"
+#define LABELNAME "label"
 
 
 class LexicalAnalyzer;
@@ -34,11 +36,20 @@ public:
 
 	void EmitLine(std::string line);
 
+
+	YYSTYPE CreateTemp();
+	YYSTYPE CreateLabel();
+	bool IsTemp(YYSTYPE val);
+	void RemoveTemp();
+
 	void AddScope();
 
 	void AddEntry(QString name,SymbolType type);
 
 	int FindVariableIndexInTable(YYSTYPE idName);
+
+	void PushLabel(YYSTYPE label);
+	YYSTYPE PopLabel();
 	
 
 private:
@@ -46,7 +57,11 @@ private:
     LexicalAnalyzer* lexicalAnalyzer;
     SyntaxAnalyzer* syntaxAnalyzer;
 
+	QStack<YYSTYPE> labelStack;
+
 	int nextIDIndex;
+	int nextTemp;
+	int nextLabel;
 	QFile * output;
 	QTextStream * outStream;
 

@@ -6,13 +6,16 @@
 #include "CompilerMain.h"
 #include <string>
 #include "SymbolTable.h"
-
+#include "qstack.h"
 
 class CompilerMain;
 class SyntaxAnalyzer
 {
 public:
     SyntaxAnalyzer();
+	
+
+
     void Analyze();
 };
 

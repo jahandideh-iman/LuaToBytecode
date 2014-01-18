@@ -19,11 +19,22 @@ void emptyPrint(YYSTYPE);
 void fullPrint(YYSTYPE);
 void AddScope();
 void EmitLine(std::string str);
-YYSTYPE getStorage(YYSTYPE idName);
-int FindVariableIndexInTable(YYSTYPE idName);
+bool IsTemp(YYSTYPE val);
+bool IsID(YYSTYPE val);
+void RemoveTemp();
+YYSTYPE CreateTemp();
+YYSTYPE CreateLabel();
+
+YYSTYPE PopLabel();
+void PushLabel(YYSTYPE label);
+
+void ManageBinop(YYSTYPE binop, YYSTYPE firstOP, YYSTYPE secOP);
+YYSTYPE GetStorage(YYSTYPE idName);
+YYSTYPE FindVariableIndexInTable(YYSTYPE idName);
 void AddEntry(YYSTYPE name, SymbolType type);
 #define print emptyPrint
 #define print1 fullPrint
+#define GETINDEX FindVariableIndexInTable
 %}
 
 
@@ -112,9 +123,22 @@ void AddEntry(YYSTYPE name, SymbolType type);
 		| Token_While exp Token_Do block Token_End			{print1("stat");}
 		| repetition Token_Do block Token_End				{print("stat");}
 		| Token_Repeat unblock								{print("stat");}
-		| Token_If conds Token_End							{print("stat");}
+		|	Token_If 
+					{	
+						PushLabel(CreateLabel());
+					} 
+			conds Token_End 
+					
 		| Token_Function funcname funcbody					{print("stat");}
-		| setlist Token_Assign explist1						{ EmitLine(getStorage($1));}
+		| setlist Token_Assign explist1						{	if(IsTemp($3))
+																{
+																	EmitLine("iload "+ GETINDEX ($3) ); 
+																	RemoveTemp();
+																}
+																else
+																	EmitLine("ipush " + $3);
+																EmitLine("istore " +GETINDEX($1));	
+																}
 		| functioncall										{print("stat");}
 		;
 
@@ -122,15 +146,28 @@ void AddEntry(YYSTYPE name, SymbolType type);
 		| Token_For namelist Token_In explist1				{print("repetition");}
 		;
 
-	conds : condlist
-		| condlist Token_Else block
+	conds : condlist {EmitLine(PopLabel()+":");}
+		| condlist Token_Else {EmitLine(PopLabel()+":");} block
 		;
 
-	condlist : cond
-		| condlist Token_ElseIf cond
+	condlist : cond 
+		| condlist Token_ElseIf {EmitLine(PopLabel() +":");PushLabel(CreateLabel());} cond
 		;
 
-	cond : exp Token_Then block
+	cond :	exp	{
+					if(IsTemp($1))
+					{
+						
+						EmitLine("iload " + GETINDEX($1));
+						RemoveTemp(); 
+					}
+					else
+						EmitLine("ipush" + $1);
+					YYSTYPE label = PopLabel();
+					PushLabel(label);
+					EmitLine("ifle " + label);
+				}
+			Token_Then block		{$$ = $1;}
 		;
 
 	laststat : Token_Break				{print("laststat");}
@@ -173,11 +210,16 @@ void AddEntry(YYSTYPE name, SymbolType type);
 		| function				{print("exp");} 
 		| prefixexp				{print("exp");} 
 		| tableconstructor		{print("exp");} 
-		| exp binop exp			{$$ = $3 + " " + $1; } 
+		| exp binop exp			{
+									ManageBinop($2,$1,$3);
+									$$ = CreateTemp();
+									EmitLine("istore " + GETINDEX($$));
+
+								} 
 		| uniop exp				{print("exp");} 
 		;
 
-	setlist : var {AddEntry($1,Type_None);}		{$$ = $1 ; print1("setlist : " + $$);} 
+	setlist : var	{$$ = $1 ; AddEntry($$,Type_None); } 
 		| setlist Token_Comma var		{print("setlist");} 
 		;
 
@@ -243,7 +285,7 @@ void AddEntry(YYSTYPE name, SymbolType type);
 		| Token_Concat				{print("binop");}
 		| Token_Lesser				{print("binop");}
 		| Token_LesserEqual			{print("binop");}
-		| Token_Greater				{print("binop");}
+		| Token_Greater				{print("binop"); $$ = $1 }
 		| Token_GreaterEqual		{print("binop");}
 		| Token_Equal				{print("binop");}
 		| Token_NotEqual			{print("binop");}
@@ -256,7 +298,7 @@ void AddEntry(YYSTYPE name, SymbolType type);
 		| Token_NumberSign			{print("uniop");}
 		;
 
-	number : Token_IntNumber		{$$ = "sipush " + $1+"\n"; EmitLine( "sipush " + $1);}
+	number : Token_IntNumber		{$$ = $1}
 		| Token_FloatNumber			{$$ = $1;}
 		;
 
@@ -297,16 +339,55 @@ void EmitLine(std::string str)
 {
 	return CompilerMain::GetSharedCompiler()->EmitLine(str);
 }
-YYSTYPE getStorage(YYSTYPE idName)
+YYSTYPE GetStorage(YYSTYPE idName)
 {
-	YYSTYPE idIndex = std::to_string(FindVariableIndexInTable(idName));
+	YYSTYPE idIndex = FindVariableIndexInTable(idName);
 	return "istore "+idIndex;
 }
 
-int FindVariableIndexInTable(YYSTYPE idName)
+YYSTYPE FindVariableIndexInTable(YYSTYPE idName)
 {
-	return CompilerMain::GetSharedCompiler()->FindVariableIndexInTable(idName);
+	return std::to_string(CompilerMain::GetSharedCompiler()->FindVariableIndexInTable(idName));
 }
+
+bool IsTemp(YYSTYPE val)
+{
+	return CompilerMain::GetSharedCompiler()->IsTemp(val);
+}
+
+bool IsID(YYSTYPE val)
+{
+	return ( (val[0]>='a' &&  val[0]<= 'z')
+			|| (val[0]>='A' &&  val[0]<= 'Z')
+			|| (val[0]=='_') );
+}
+
+void RemoveTemp()
+{
+	CompilerMain::GetSharedCompiler()->RemoveTemp();
+}
+
+YYSTYPE CreateTemp()
+{
+	return CompilerMain::GetSharedCompiler()->CreateTemp();
+}
+
+
+YYSTYPE CreateLabel()
+{
+	return CompilerMain::GetSharedCompiler()->CreateLabel();
+}
+
+YYSTYPE PopLabel()
+{
+	return CompilerMain::GetSharedCompiler()->PopLabel();
+}
+
+void PushLabel(YYSTYPE label)
+{
+	return CompilerMain::GetSharedCompiler()->PushLabel(label);
+}
+
 
 SyntaxAnalyzer::SyntaxAnalyzer()
 {
@@ -327,7 +408,44 @@ void emptyPrint(YYSTYPE str)
 	
 }
 
+void ManageBinop(YYSTYPE binop, YYSTYPE firstOP, YYSTYPE secOP)
+{
+	if(binop == ">")
+	{
+		if(IsTemp(firstOP))
+		{
+			EmitLine("iload " + GETINDEX(firstOP));
+			RemoveTemp();			
+		}
+		else
+		{
+			if(IsID(firstOP))
+				EmitLine("iload " + GETINDEX(firstOP));
+			else
+				EmitLine("ldc " + firstOP);
+		}
+		if(IsTemp(secOP))
+		{
+			EmitLine("iload " + GETINDEX(secOP));
+			RemoveTemp();
+		}
+		else
+		{
+			if(IsID(secOP))
+				EmitLine("iload " + GETINDEX(secOP));
+			else
+				EmitLine("ldc " + secOP);
+		}
+		EmitLine( "isub ");
+		 
+
+		
+
+	}
+}
+
 void fullPrint(YYSTYPE str)
 {
 	qDebug(str.c_str());
 }
+

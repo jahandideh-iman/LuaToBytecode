@@ -12,6 +12,8 @@ CompilerMain::CompilerMain()
 	
 	
 	nextIDIndex = 0;
+	nextTemp = 0;
+	nextLabel = 0;
 	currentScope = nullptr;
 	AddScope();
 	SetSharedCompiler(this);
@@ -33,10 +35,41 @@ void CompilerMain::EmitLine(std::string line)
 	(*outStream)<<line.c_str()<<endl;
 	outStream->flush();
 }
+
 void CompilerMain::AddScope()
 {
 	currentScope = new SymbolTable(currentScope);
 }
+
+YYSTYPE CompilerMain::CreateLabel()
+{
+	nextLabel++;
+	std::string labelName = LABELNAME+std::to_string(nextLabel);
+	return labelName;
+}
+
+YYSTYPE CompilerMain::CreateTemp()
+{
+	nextTemp++;
+
+	std::string tempName = TEMPNAME+std::to_string(nextTemp);
+	AddEntry(QString::fromStdString(tempName)
+		, Type_None);
+	return tempName;
+
+	
+}
+
+bool CompilerMain::IsTemp(YYSTYPE val)
+{
+	return val[0]=='$';
+}
+
+void CompilerMain::RemoveTemp()
+{
+	nextTemp--;
+}
+
 
 void CompilerMain::AddEntry(QString name, SymbolType type)
 {
@@ -112,3 +145,12 @@ void CompilerMain::InitialSyntaxAnalyzer()
 
 }
 
+void CompilerMain::PushLabel(YYSTYPE label)
+{
+	labelStack.push(label);
+}
+
+YYSTYPE CompilerMain::PopLabel()
+{
+	return labelStack.pop();
+}
