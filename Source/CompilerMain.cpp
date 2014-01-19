@@ -9,26 +9,27 @@ std::string toString(int val)
 
 CompilerMain::CompilerMain()
 {
+    SetSharedCompiler(this);
+    mainwindow =new CompilerView;
+    mainwindow->show();
 	if(QFile::exists("OutPut.j"))
 		QFile::remove("OutPut.j");
 	output = new QFile("OutPut.j");
 	output->open( QIODevice::WriteOnly);
 	outStream = new QTextStream(output);
 
-	
-	
 	nextIDIndex = 0;
 	nextTemp = 0;
 	nextLabel = 0;
-	currentScope = nullptr;
+    currentScope = NULL;
 	AddScope();
-	SetSharedCompiler(this);
+
     nextTokenIndex= 0;
     qDebug ("Compiler Main");
     tokenList = new QVector<Token*>;
     InitialLexicalAnalyzer();
     InitialSyntaxAnalyzer();
-   
+
 }
 
 CompilerMain::~CompilerMain()
@@ -102,7 +103,7 @@ int CompilerMain::FindVariableIndexInTable(YYSTYPE idName)
 	SymbolTable * cScope;
 	cScope = currentScope;
 	int index;
-	while(cScope!=nullptr)
+    while(cScope!=NULL)
 	{
 		index = cScope->FindVariableIndexInTable(QString::fromStdString(idName));
 		if(index!=-1)
@@ -148,7 +149,7 @@ void CompilerMain::InitialLexicalAnalyzer()
     lexicalAnalyzer = new LexicalAnalyzer();
     //lexicalAnalyzer->SetTokenInsertHandler(this,InsertTokenSelector(CompilerMain::InsertToken));
     //lexicalAnalyzer->StartLexing("SampleText.txt");
-    lexicalAnalyzer->StartLexing("Resources/SampleText_SimpleInt.txt");
+    //lexicalAnalyzer->StartLexing("Resources/SampleText_SimpleInt.txt");
 	InsertToken(new Token(Token_EndOfFile,"",0,0));
 
 
@@ -165,7 +166,7 @@ void CompilerMain::InitialSyntaxAnalyzer()
 	EmitLine(".limit stack 250");
 	EmitLine(".limit locals 300");
 
-    syntaxAnalyzer->Analyze();
+    //syntaxAnalyzer->Analyze();
 
 	EmitLine("   return");
 	EmitLine(".end method");
@@ -182,3 +183,12 @@ YYSTYPE CompilerMain::PopLabel()
 	return labelStack.pop();
 }
 
+void CompilerMain::SetEditor(TextEditor *_editor)
+{
+    editor=_editor;
+}
+
+void CompilerMain::Compile()
+{
+
+}

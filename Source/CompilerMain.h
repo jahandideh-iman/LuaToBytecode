@@ -13,6 +13,9 @@
 #include "qfile.h"
 #include "qtextstream.h"
 #include "qstack.h"
+#include "TextEditor.h"
+
+#include "CompilerView.h"
 
 #define TEMPNAME "$TEMP"
 #define LABELNAME "label"
@@ -20,6 +23,7 @@
 
 class LexicalAnalyzer;
 class SyntaxAnalyzer;
+class CompilerView;
 
 #define LEXERROR "lex Error "
 
@@ -43,6 +47,9 @@ public:
     CompilerMain();
     ~CompilerMain();
 
+
+
+    CompilerView* mainwindow;
 	
     void InsertToken(Token* token);
     int GetNextToken( );
@@ -70,9 +77,14 @@ public:
 
 	void PushLabel(YYSTYPE label);
 	YYSTYPE PopLabel();
+
+    void SetEditor(TextEditor* _editor);
+    void Compile();
 	
 
 private:
+    TextEditor* editor;
+
     QVector<Token*>* tokenList;
     LexicalAnalyzer* lexicalAnalyzer;
     SyntaxAnalyzer* syntaxAnalyzer;
