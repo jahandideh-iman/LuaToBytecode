@@ -24,13 +24,15 @@
 class Token
 {
 public:
-    Token(yytokentype _type, QString _value);
+    Token(yytokentype _type, QString _value, int _lineNumber, int _columnNumber);
     void SetTokenType(yytokentype newType);
     void SetTokenValue(QString newValue);
 
     QString GetValue();
     yytokentype GetType();
 private:
+	int lineNumber;
+	int columnNumber;
     yytokentype type;
     QString value;
 };

@@ -21,6 +21,21 @@
 class LexicalAnalyzer;
 class SyntaxAnalyzer;
 
+#define LEXERROR "lex Error "
+
+enum ErrorType
+{
+	Error_Lexical,Error_Syntax,
+};
+
+struct Error
+{
+	QString msg;
+	int lineNumber;
+	int columnNumber;
+	ErrorType type;
+};
+
 class CompilerMain : public BaseObject
 {
 
@@ -35,16 +50,21 @@ public:
     static CompilerMain* GetSharedCompiler();
 
 	void EmitLine(std::string line);
-
+	
+	void AddError();
 
 	YYSTYPE CreateTemp();
 	YYSTYPE CreateLabel();
 	bool IsTemp(YYSTYPE val);
 	void RemoveTemp();
 
+	bool IsInTable(QString idName);
+
 	void AddScope();
 
 	void AddEntry(QString name,SymbolType type);
+
+
 
 	int FindVariableIndexInTable(YYSTYPE idName);
 
@@ -56,6 +76,8 @@ private:
     QVector<Token*>* tokenList;
     LexicalAnalyzer* lexicalAnalyzer;
     SyntaxAnalyzer* syntaxAnalyzer;
+
+	QVector<QString> errorList;
 
 	QStack<YYSTYPE> labelStack;
 

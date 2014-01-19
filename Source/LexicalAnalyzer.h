@@ -28,8 +28,8 @@ public:
 
     static void SetTokenInsertHandler(BaseObject *main, InsertTokenHandler handler);
 
-    static void InsertToken(yytokentype type, string value);
-    static Token* CreateToken(yytokentype type, string value);
+	static void InsertToken(yytokentype type, string value,int lineNumber,int columnNumber);
+    static Token* CreateToken(yytokentype type, string value, int line,int column);
 
 
 private:

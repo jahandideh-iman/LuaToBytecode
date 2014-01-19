@@ -4,11 +4,12 @@ CompilerMain* CompilerMain::sharedCompiler;
 
 CompilerMain::CompilerMain()
 {
-	if(QFile::exists("OutPut.txt"))
-		QFile::remove("OutPut.txt");
-	output = new QFile("OutPut.txt");
+	if(QFile::exists("OutPut.j"))
+		QFile::remove("OutPut.j");
+	output = new QFile("OutPut.j");
 	output->open( QIODevice::WriteOnly);
 	outStream = new QTextStream(output);
+
 	
 	
 	nextIDIndex = 0;
@@ -73,13 +74,22 @@ void CompilerMain::RemoveTemp()
 
 void CompilerMain::AddEntry(QString name, SymbolType type)
 {
+	if(IsInTable(name))
+		return ;
 	nextIDIndex++;
+	qDebug()<<("Entry " + name + " is added to index " )<<nextIDIndex;
+	//qDebug()<<("Next Token is " + name);
 
 	SymbolEntry* entry = new SymbolEntry;
 	entry->index = nextIDIndex;
 	entry->name = name;
 	entry->type = type;
 	currentScope->AddEntry(entry);
+}
+
+bool CompilerMain::IsInTable(QString name)
+{
+	return currentScope->FindVariableIndexInTable(name)!=-1;
 }
 
 int CompilerMain::FindVariableIndexInTable(YYSTYPE idName)
@@ -134,6 +144,7 @@ void CompilerMain::InitialLexicalAnalyzer()
     //lexicalAnalyzer->SetTokenInsertHandler(this,InsertTokenSelector(CompilerMain::InsertToken));
     //lexicalAnalyzer->StartLexing("SampleText.txt");
     lexicalAnalyzer->StartLexing("Resources/SampleText_SimpleInt.txt");
+	InsertToken(new Token(Token_EndOfFile,"",0,0));
 
 
 }
@@ -141,7 +152,18 @@ void CompilerMain::InitialLexicalAnalyzer()
 void CompilerMain::InitialSyntaxAnalyzer()
 {
     syntaxAnalyzer = new SyntaxAnalyzer();
+
+	
+	EmitLine(".class public OutPut");
+	EmitLine(".super java/lang/Object");
+	EmitLine(".method public static main([Ljava/lang/String;)V");
+	EmitLine(".limit stack 250");
+	EmitLine(".limit locals 300");
+
     syntaxAnalyzer->Analyze();
+
+	EmitLine("   return");
+	EmitLine(".end method");
 
 }
 

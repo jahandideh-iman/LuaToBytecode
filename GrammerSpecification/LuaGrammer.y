@@ -21,10 +21,12 @@ void AddScope();
 void EmitLine(std::string str);
 bool IsTemp(YYSTYPE val);
 bool IsID(YYSTYPE val);
+void EmitComparison(YYSTYPE comparisonVal);
 void RemoveTemp();
 YYSTYPE CreateTemp();
 YYSTYPE CreateLabel();
 
+void EmitLoadValue(YYSTYPE val);
 YYSTYPE PopLabel();
 void PushLabel(YYSTYPE label);
 
@@ -97,53 +99,140 @@ void AddEntry(YYSTYPE name, SymbolType type);
 
 %%
 
-	chunk :  block						{$$= $1 ; print1($$);}
+	chunk :  block						{$$= $1 ;}
 		;
 
-	semi : 							{print1("semi Y"); }
+	semi : 							{ }
 		| Token_Semicolon			{print("semi"); }
 		; 
 
-	block :  scope statlist				{$$ = $1 + $2 ;print1("block1 " + $2 );  }
-		| scope statlist laststat semi	{$$ = $1 + $2 + $3 + $4 ;print1("block2" + $$);  }
+	block :  scope statlist				{$$ = $1 + $2 ;  }
+		| scope statlist laststat semi	{$$ = $1 + $2 + $3 + $4 ;  }
 		;
 
-	unblock : block Token_Until exp		{print("unblock"); }
+	unblock : block Token_Until exp		{}
 		;
 
-	scope :								{print1("scope Y");}
-		| scope statlist binding semi	{print1("scope N");   }
+	scope :								{}
+		| scope statlist binding semi	{  }
 		;
 
-	statlist :							{ $$ = $0 ;print1("statlist Y" + $$); }
-		|  statlist stat semi 			{$$ = $1 + $2  ;print1("statlist N " + $$); }
+	statlist :							{ $$ = $0 ; }
+		|  statlist stat semi 			{$$ = $1 + $2  ; }
 		;
 
-	stat : Token_Do block Token_End							{print1("stat"); }
-		| Token_While exp Token_Do block Token_End			{print1("stat");}
-		| repetition Token_Do block Token_End				{print("stat");}
-		| Token_Repeat unblock								{print("stat");}
+	stat : Token_Do {print1("WTFFFFFFFFFFFFFF");} block Token_End							{ }
+		| Token_While 
+					{
+						YYSTYPE whileBegin = CreateLabel();
+						YYSTYPE whileEnd = CreateLabel();
+						EmitLine(whileBegin + ":");
+						PushLabel(whileBegin);
+						PushLabel(whileEnd);
+						print1("In While");
+					}
+					exp 
+					{
+						print1("EXP in while is " + $2);
+						
+						//if(!IsTemp($2))
+							//$2=CreateTemp();
+						EmitLoadValue($2);
+						YYSTYPE whileEnd = PopLabel();
+						PushLabel(whileEnd);
+						EmitLine("ifle " + whileEnd);
+
+					}
+					Token_Do { print1("In DOooooo");}block  {print1("new Block");} Token_End
+					{
+						YYSTYPE whileEnd = PopLabel();
+						YYSTYPE whileBegin = PopLabel();
+						EmitLine("goto " +whileBegin);
+						EmitLine(whileEnd+ ":");
+
+					}
+		| repetition 
+		| Token_Repeat unblock								{}
 		|	Token_If 
 					{	
 						PushLabel(CreateLabel());
 					} 
 			conds Token_End 
 					
-		| Token_Function funcname funcbody					{print("stat");}
+		| Token_Function funcname funcbody					{}
 		| setlist Token_Assign explist1						{	if(IsTemp($3))
 																{
 																	EmitLine("iload "+ GETINDEX ($3) ); 
 																	RemoveTemp();
 																}
 																else
-																	EmitLine("ipush " + $3);
+																	EmitLine("ldc " + $3);
+																EmitLine(";store in " + $$);
 																EmitLine("istore " +GETINDEX($1));	
 																}
-		| functioncall										{print("stat");}
+		| functioncall										{}
 		;
 
-	repetition : Token_For name Token_Assign explist23		{print1("numeric");}
-		| Token_For namelist Token_In explist1				{print("repetition");}
+	repetition : Token_For name Token_Assign exp Token_Comma exp 
+												{
+													YYSTYPE forCond = CreateLabel();
+													YYSTYPE	forEnd = CreateLabel();
+													PushLabel(forEnd);
+													PushLabel(forCond);
+													AddEntry($2,Type_None);
+													EmitLoadValue($4);
+													EmitLine(";store in " + $2);  
+													EmitLine("istore " + GETINDEX($2));
+
+													EmitLine(forCond + ":");
+													//TODO: semantic check: it must be variable
+													EmitLoadValue($2);
+													EmitLoadValue($6);
+													EmitLine("if_icmpgt " +forEnd);
+												}
+				Token_Do block Token_End
+												{
+													EmitLoadValue(std::to_string(1));
+													EmitLoadValue($2);
+													EmitLine("iadd");
+													EmitLine(";store in " + $2);  
+													EmitLine("istore " + GETINDEX($2));
+													EmitLine("goto " + PopLabel());
+													EmitLine(PopLabel() + ":");
+													//TODO: temp Removing 
+												}
+		| Token_For name Token_Assign exp Token_Comma exp Token_Comma exp 
+												{
+													YYSTYPE forCond = CreateLabel();
+													YYSTYPE	forEnd = CreateLabel();
+													PushLabel(forEnd);
+													PushLabel(forCond);
+													AddEntry($2,Type_None);
+													EmitLoadValue($4);
+													EmitLine(";store in " + $2);  
+													EmitLine("istore " + GETINDEX($2));
+
+													EmitLine(forCond + ":");
+													//TODO: semantic check: it must be variable
+													EmitLoadValue($2);
+													EmitLoadValue($6);
+													EmitLine("if_icmpgt " +forEnd);
+												}	
+				Token_Do block Token_End	
+												{
+													EmitLoadValue($8);
+													EmitLoadValue($2);
+													EmitLine("iadd");
+													EmitLine(";store in " + $2);  
+													EmitLine("istore " + GETINDEX($2));
+													EmitLine("goto " + PopLabel());
+													EmitLine(PopLabel() + ":");
+													//TODO: temp Removing 
+												}
+		
+		
+			
+		| Token_For namelist Token_In explist1	 Token_Do block Token_End				{print("repetition");}
 		;
 
 	conds : condlist {EmitLine(PopLabel()+":");}
@@ -162,7 +251,7 @@ void AddEntry(YYSTYPE name, SymbolType type);
 						RemoveTemp(); 
 					}
 					else
-						EmitLine("ipush" + $1);
+						EmitLine("ldc" + $1);
 					YYSTYPE label = PopLabel();
 					PushLabel(label);
 					EmitLine("ifle " + label);
@@ -170,65 +259,70 @@ void AddEntry(YYSTYPE name, SymbolType type);
 			Token_Then block		{$$ = $1;}
 		;
 
-	laststat : Token_Break				{print("laststat");}
-		| Token_Return					{print("laststat");}
-		| Token_Return explist1			{print("laststat");}
+	laststat : Token_Break				{}
+		| Token_Return					{}
+		| Token_Return explist1			{}
 		;
 
-	binding : Token_Local namelist							{print("binding");}
-		| Token_Local namelist Token_Assign explist1		{print("binding");}
-		| Token_Local Token_Function name funcbody			{print("binding");}
+	binding : Token_Local namelist							{}
+		| Token_Local namelist Token_Assign explist1		{}
+		| Token_Local Token_Function name funcbody			{}
 		;
 
 	funcname : dottedname
 		| dottedname Token_Colon name
 		;
 
-	dottedname : name						{print("dottedName");}
-		| dottedname Token_Dot name			{print("dottedName");}
+	dottedname : name						{}
+		| dottedname Token_Dot name			{}
 		;
 
-	namelist : name							{print("namelist");}
-		| namelist Token_Comma name			{print("namelist");}
+	namelist : name							{}
+		| namelist Token_Comma name			{}
 		;
 
-	explist1 : exp							{$$ = $1 ;print1("explist " + $$);}
-		| explist1 Token_Comma exp			{print("explist1");}
-		;
-
-	explist23 : exp Token_Comma exp					{print("explist23");}
-		| exp Token_Comma exp Token_Comma exp		{print("explist23");}
+	explist1 : exp							{$$ = $1 ;}
+		| explist1 Token_Comma exp			{}
 		;
 
 
-	exp : Token_Nil				{print("exp");} 
-		| Token_True			{print("exp");} 
-		| Token_False			{print("exp");} 
-		| number				{$$ = $1 ; print1("exp " + $$);} 
-		| Token_String			{print("exp");} 
-		| Token_Varag			{print("exp");} 
-		| function				{print("exp");} 
-		| prefixexp				{print("exp");} 
-		| tableconstructor		{print("exp");} 
+	exp : Token_Nil				{} 
+		| Token_True			{$$ = std::to_string(1)} 
+		| Token_False			{$$ = std::to_string(0)} 
+		| number				{$$ = $1 ;} 
+		| Token_String			{$$ = yylval;} 
+		| Token_Varag			{} 
+		| function				{} 
+		| prefixexp				{$$=$1} 
+		| tableconstructor		{} 
 		| exp binop exp			{
 									ManageBinop($2,$1,$3);
 									$$ = CreateTemp();
+									print1("in binop first exp : " +$1);
+									print1("in binop second exp : "+ $3);
+									print1("in binop operator : "+ $2);
+									print1("in binop result : "+ $$);
+
+
+									
+									EmitLine(";store in " + $$);
 									EmitLine("istore " + GETINDEX($$));
+									
 
 								} 
-		| uniop exp				{print("exp");} 
+		| uniop exp				{} 
 		;
 
 	setlist : var	{$$ = $1 ; AddEntry($$,Type_None); } 
 		| setlist Token_Comma var		{print("setlist");} 
 		;
 
-	var : name														{print("name : "); $$ = $1;} 
+	var : name														{print("name : "); $$ = $1; } 
 		| prefixexp Token_LeftBrack exp Token_RightBrack			{print("var");}
 		| prefixexp Token_Dot name									{print("var");}
 		;
 
-	prefixexp : var										{print("prefixexp");}
+	prefixexp : var										{}
 		| functioncall									{print("prefixexp");}
 		| Token_LeftParen exp Token_RightParen			{print("prefixexp");}
 		;
@@ -287,7 +381,7 @@ void AddEntry(YYSTYPE name, SymbolType type);
 		| Token_LesserEqual			{print("binop");}
 		| Token_Greater				{print("binop"); $$ = $1 }
 		| Token_GreaterEqual		{print("binop");}
-		| Token_Equal				{print("binop");}
+		| Token_Equal				{}
 		| Token_NotEqual			{print("binop");}
 		| Token_And					{print("binop");}
 		| Token_Or					{print("binop");}
@@ -410,38 +504,70 @@ void emptyPrint(YYSTYPE str)
 
 void ManageBinop(YYSTYPE binop, YYSTYPE firstOP, YYSTYPE secOP)
 {
+	EmitLoadValue(firstOP);
+	EmitLoadValue(secOP);
+
 	if(binop == ">")
+		EmitComparison("if_icmpgt");
+
+	else if (binop==">=")
+		EmitComparison("if_icmpge");
+
+	else if (binop=="<")
+		EmitComparison("if_icmplt");
+
+	else if (binop == "<=")
+		EmitComparison("if_icmple");
+
+	else if (binop == "==")
+		EmitComparison("if_icmpeq");
+
+	else if (binop == "~=")
+		EmitComparison("if_icmpne");
+
+	else if (binop == "+")
+		EmitLine("iadd");
+	else if (binop == "-")
+		EmitLine("isub");
+	else if (binop == "/")
+		EmitLine("idiv");
+	else if (binop == "*")
+		EmitLine("imul");
+	else if (binop == "^")
+		EmitLine("ishl");
+	
+	
+
+
+
+}
+
+void EmitComparison(YYSTYPE comparisonVal)
+{
+	YYSTYPE trueLabel = CreateLabel();
+	YYSTYPE endLabel =  CreateLabel();
+	EmitLine(comparisonVal+" "+trueLabel);
+	EmitLoadValue(std::to_string(0));
+	EmitLoadValue("goto " + endLabel);
+	EmitLoadValue(trueLabel + ":");
+	EmitLoadValue(std::to_string(1));
+	EmitLoadValue(endLabel + ":");
+}
+
+void EmitLoadValue(YYSTYPE val)
+{
+	if(IsTemp(val))
 	{
-		if(IsTemp(firstOP))
-		{
-			EmitLine("iload " + GETINDEX(firstOP));
-			RemoveTemp();			
-		}
-		else
-		{
-			if(IsID(firstOP))
-				EmitLine("iload " + GETINDEX(firstOP));
-			else
-				EmitLine("ldc " + firstOP);
-		}
-		if(IsTemp(secOP))
-		{
-			EmitLine("iload " + GETINDEX(secOP));
-			RemoveTemp();
-		}
-		else
-		{
-			if(IsID(secOP))
-				EmitLine("iload " + GETINDEX(secOP));
-			else
-				EmitLine("ldc " + secOP);
-		}
-		EmitLine( "isub ");
-		 
-
-		
-
+		EmitLine("iload "+ GETINDEX(val));
+		RemoveTemp();
 	}
+	else if(IsID(val))
+	{
+		EmitLine("iload "+ GETINDEX(val));
+	}
+	else
+		EmitLine("ldc "+ val);
+	
 }
 
 void fullPrint(YYSTYPE str)

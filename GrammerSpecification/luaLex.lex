@@ -14,10 +14,12 @@
     bool LexicalAnalyzer::bHasInstance;
 	
 	#define printf qDebug
-	void InsertToken(yytokentype type, string value)
+	void InsertToken(yytokentype type, string value, int numberLine, int columnLine)
 	{
-		LexicalAnalyzer::InsertToken(type,value);
+		LexicalAnalyzer::InsertToken(type,value,numberLine,columnLine);
 	}
+
+	int LineNumber = 1, ColumnNumber = 0;
 %}
 
 DIGIT    [0-9]
@@ -27,121 +29,124 @@ ws 		 [ \t\n]
 
 string        \"([^'\n]|\'\')+\"
 
+comment		"--"(.*)
+
+
 %%
 
-"--"(.*)\n					/* eat up one-line comments */
+{comment}\n					LineNumber++;/* eat up one-line comments */
+							
 
+"and"						InsertToken(Token_And, yytext, LineNumber, ColumnNumber);
 
-"and"						InsertToken(Token_And, yytext);
+"break"						InsertToken(Token_Break, yytext, LineNumber, ColumnNumber);
 
-"break"						InsertToken(Token_Break, yytext);
+"do"						InsertToken(Token_Do, yytext, LineNumber, ColumnNumber);
 
-"do"						InsertToken(Token_Do, yytext);
+"else"						InsertToken(Token_Else, yytext, LineNumber, ColumnNumber);
 
-"else"						InsertToken(Token_Else, yytext);
+"elseif"					InsertToken(Token_ElseIf, yytext, LineNumber, ColumnNumber);
 
-"elseif"					InsertToken(Token_ElseIf, yytext);
+"end"						InsertToken(Token_End, yytext, LineNumber, ColumnNumber);
 
-"end"						InsertToken(Token_End, yytext);
+"false"						InsertToken(Token_False, yytext, LineNumber, ColumnNumber);
 
-"false"						InsertToken(Token_False, yytext);
+"for"						InsertToken(Token_For, yytext, LineNumber, ColumnNumber);
 
-"for"						InsertToken(Token_For, yytext);
+"function"					InsertToken(Token_Function, yytext, LineNumber, ColumnNumber);
 
-"function"					InsertToken(Token_Function, yytext);
+"if"						InsertToken(Token_If, yytext, LineNumber, ColumnNumber);
 
-"if"						InsertToken(Token_If, yytext);
+"in"						InsertToken(Token_In, yytext, LineNumber, ColumnNumber);
 
-"in"						InsertToken(Token_In, yytext);
+"local"						InsertToken(Token_Local, yytext, LineNumber, ColumnNumber);
 
-"local"						InsertToken(Token_Local, yytext);
+"nil"						InsertToken(Token_Nil, yytext, LineNumber, ColumnNumber);
 
-"nil"						InsertToken(Token_Nil, yytext);
+"not"						InsertToken(Token_Not, yytext, LineNumber, ColumnNumber);
 
-"not"						InsertToken(Token_Not, yytext);
+"or"						InsertToken(Token_Or, yytext, LineNumber, ColumnNumber);
 
-"or"						InsertToken(Token_Or, yytext);
+"repeat"					InsertToken(Token_Repeat, yytext, LineNumber, ColumnNumber);
 
-"repeat"					InsertToken(Token_Repeat, yytext);
+"return"					InsertToken(Token_Return, yytext, LineNumber, ColumnNumber);
 
-"return"					InsertToken(Token_Return, yytext);
+"then"						InsertToken(Token_Then, yytext, LineNumber, ColumnNumber);
 
-"then"						InsertToken(Token_Then, yytext);
+"true"						InsertToken(Token_True, yytext, LineNumber, ColumnNumber);
 
-"true"						InsertToken(Token_True, yytext);
+"until"						InsertToken(Token_Until, yytext, LineNumber, ColumnNumber);
 
-"until"						InsertToken(Token_Until, yytext);
+"while"						InsertToken(Token_While, yytext, LineNumber, ColumnNumber);
 
-"while"						InsertToken(Token_While, yytext);
+"+"							InsertToken(Token_Plus, yytext, LineNumber, ColumnNumber);
 
-"+"							InsertToken(Token_Plus, yytext);
+"-"							InsertToken(Token_Minus, yytext, LineNumber, ColumnNumber);
 
-"-"						InsertToken(Token_Minus, yytext);
+"*"							InsertToken(Token_Asterisk, yytext, LineNumber, ColumnNumber);
 
-"*"							InsertToken(Token_Asterisk, yytext);
+"/"							InsertToken(Token_Slash, yytext, LineNumber, ColumnNumber);
 
-"/"							InsertToken(Token_Slash, yytext);
+"%"							InsertToken(Token_Percent, yytext, LineNumber, ColumnNumber);
 
-"%"							InsertToken(Token_Percent, yytext);
+"^"							InsertToken(Token_Caret, yytext, LineNumber, ColumnNumber);
 
-"^"							InsertToken(Token_Caret, yytext);
+"#"							InsertToken(Token_NumberSign, yytext, LineNumber, ColumnNumber);
 
-"#"							InsertToken(Token_NumberSign, yytext);
+"=="						InsertToken(Token_Equal, yytext, LineNumber, ColumnNumber);
 
-"=="						InsertToken(Token_Equal, yytext);
+"~="						InsertToken(Token_NotEqual, yytext, LineNumber, ColumnNumber);
 
-"~="						InsertToken(Token_NotEqual, yytext);
+"<="						InsertToken(Token_LesserEqual, yytext, LineNumber, ColumnNumber);
 
-"<="						InsertToken(Token_LesserEqual, yytext);
+">="						InsertToken(Token_GreaterEqual, yytext, LineNumber, ColumnNumber);
 
-">="						InsertToken(Token_GreaterEqual, yytext);
+"<"							InsertToken(Token_Lesser, yytext, LineNumber, ColumnNumber);
 
-"<"							InsertToken(Token_Lesser, yytext);
+">"							InsertToken(Token_Greater, yytext, LineNumber, ColumnNumber);
 
-">"							InsertToken(Token_Greater, yytext);
+"="							InsertToken(Token_Assign, yytext, LineNumber, ColumnNumber);
 
-"="							InsertToken(Token_Assign, yytext);
+"("							InsertToken(Token_LeftParen, yytext, LineNumber, ColumnNumber);
 
-"("							InsertToken(Token_LeftParen, yytext);
+")"							InsertToken(Token_RightParen, yytext, LineNumber, ColumnNumber);
 
-")"							InsertToken(Token_RightParen, yytext);
+"{"							InsertToken(Token_LeftBrace, yytext, LineNumber, ColumnNumber);
 
-"{"							InsertToken(Token_LeftBrace, yytext);
+"}"							InsertToken(Token_RightBrace, yytext, LineNumber, ColumnNumber);
 
-"}"							InsertToken(Token_RightBrace, yytext);
+"["							InsertToken(Token_LeftBrack, yytext, LineNumber, ColumnNumber);
 
-"["							InsertToken(Token_LeftBrack, yytext);
+"]"							InsertToken(Token_RightBrack, yytext, LineNumber, ColumnNumber);
 
-"]"							InsertToken(Token_RightBrack, yytext);
+";"							InsertToken(Token_Semicolon, yytext, LineNumber, ColumnNumber);
 
-";"							InsertToken(Token_Semicolon, yytext);
+":"							InsertToken(Token_Colon, yytext, LineNumber, ColumnNumber);
 
-":"							InsertToken(Token_Colon, yytext);
+","							InsertToken(Token_Comma, yytext, LineNumber, ColumnNumber);
 
-","							InsertToken(Token_Comma, yytext);
+"."							InsertToken(Token_Dot, yytext, LineNumber, ColumnNumber);
 
-"."							InsertToken(Token_Dot, yytext);
+".."						InsertToken(Token_Concat, yytext, LineNumber, ColumnNumber);
 
-".."						InsertToken(Token_Concat, yytext);
+"..."						InsertToken(Token_Varag, yytext, LineNumber, ColumnNumber);
 
-"..."						InsertToken(Token_Varag, yytext);
+{DIGIT}+    				InsertToken(Token_IntNumber, yytext, LineNumber, ColumnNumber);
 
-{DIGIT}+    				InsertToken(Token_IntNumber, yytext);
+{DIGIT}+"."{DIGIT}*        	InsertToken(Token_FloatNumber, yytext, LineNumber, ColumnNumber);
 
-{DIGIT}+"."{DIGIT}*        	InsertToken(Token_FloatNumber, yytext);
+{ID}        				InsertToken(Token_Identifier,yytext, LineNumber, ColumnNumber);
 
-{ID}        				InsertToken(Token_Identifier,yytext);
+{string} 					InsertToken(Token_String, yytext, LineNumber, ColumnNumber);
 
-{string} 					InsertToken(Token_String, yytext);
-
-{ws}+          				/* eat up whitespace */
-
-
-
+{ws}         				{if(*yytext == '\n') LineNumber++;}
 
 
 
-.           				printf( "!!!!!!!!! Unrecognized character: %s\n", yytext );
+
+
+
+.           				 printf( "!!!!!!!!! Unrecognized character: %s\n", yytext );
 
 
 %%
@@ -166,19 +171,19 @@ void LexicalAnalyzer::SetTokenInsertHandler(BaseObject* main,InsertTokenHandler 
     recieverObj = main;
 }
 
-void LexicalAnalyzer::InsertToken(yytokentype type, string value)
+void LexicalAnalyzer::InsertToken(yytokentype type, string value,int lineNum , int columnNum)
 {
     if(HasInstance())
     {
 		//qDebug("InsertToken");
-        CALL_MEMBER_FN(recieverObj,insertTokenHandler)(CreateToken(type,value) );
+        CALL_MEMBER_FN(recieverObj,insertTokenHandler)(CreateToken(type,value,lineNum, columnNum) );
     }
 }
 
-Token* LexicalAnalyzer::CreateToken(yytokentype type, string value)
+Token* LexicalAnalyzer::CreateToken(yytokentype type, string value, int line, int column)
 {
 	//qDebug("CreateToken");
-    return new Token(type,QString::fromStdString(value));
+    return new Token(type,QString::fromStdString(value),line,column);
 }
 
 bool LexicalAnalyzer::HasInstance()
