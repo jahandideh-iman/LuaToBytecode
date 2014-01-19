@@ -192,3 +192,23 @@ void CompilerMain::Compile()
 {
 
 }
+
+void CompilerMain::AddError(std::string msg,ErrorType type,int line, int column)
+{
+	Error* error = new Error;
+	error->msg = QString::fromStdString(msg);
+	error->type = type;
+	error->lineNumber = line;
+	error->columnNumber = column;
+
+	errorList.append(error);
+
+}
+
+void CompilerMain::AddSyntaxError()
+{
+	Token* errorToken = tokenList->at(nextTokenIndex-1);
+	AddError(SYNERROR,Error_Syntax, errorToken->lineNumber, errorToken->columnNumber);
+
+}
+

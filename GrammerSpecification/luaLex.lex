@@ -12,6 +12,9 @@
 	BaseObject* LexicalAnalyzer::recieverObj;
     InsertTokenHandler LexicalAnalyzer::insertTokenHandler;
     bool LexicalAnalyzer::bHasInstance;
+
+	int GetCharArrayLength(char* carray);
+	void AddError(std::string msg,ErrorType type,int line, int column);
 	
 	#define printf qDebug
 	void InsertToken(yytokentype type, string value, int numberLine, int columnLine)
@@ -19,7 +22,7 @@
 		LexicalAnalyzer::InsertToken(type,value,numberLine,columnLine);
 	}
 
-	int LineNumber = 1, ColumnNumber = 0;
+	int LineNumber = 1, ColumnNumber = 1;
 %}
 
 DIGIT    [0-9]
@@ -34,119 +37,119 @@ comment		"--"(.*)
 
 %%
 
-{comment}\n					LineNumber++;/* eat up one-line comments */
+{comment}\n					LineNumber++; ColumnNumber=1;/* eat up one-line comments */
 							
 
-"and"						InsertToken(Token_And, yytext, LineNumber, ColumnNumber);
+"and"						InsertToken(Token_And, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"break"						InsertToken(Token_Break, yytext, LineNumber, ColumnNumber);
+"break"						InsertToken(Token_Break, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"do"						InsertToken(Token_Do, yytext, LineNumber, ColumnNumber);
+"do"						InsertToken(Token_Do, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"else"						InsertToken(Token_Else, yytext, LineNumber, ColumnNumber);
+"else"						InsertToken(Token_Else, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"elseif"					InsertToken(Token_ElseIf, yytext, LineNumber, ColumnNumber);
+"elseif"					InsertToken(Token_ElseIf, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"end"						InsertToken(Token_End, yytext, LineNumber, ColumnNumber);
+"end"						InsertToken(Token_End, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"false"						InsertToken(Token_False, yytext, LineNumber, ColumnNumber);
+"false"						InsertToken(Token_False, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"for"						InsertToken(Token_For, yytext, LineNumber, ColumnNumber);
+"for"						InsertToken(Token_For, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"function"					InsertToken(Token_Function, yytext, LineNumber, ColumnNumber);
+"function"					InsertToken(Token_Function, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"if"						InsertToken(Token_If, yytext, LineNumber, ColumnNumber);
+"if"						InsertToken(Token_If, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"in"						InsertToken(Token_In, yytext, LineNumber, ColumnNumber);
+"in"						InsertToken(Token_In, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"local"						InsertToken(Token_Local, yytext, LineNumber, ColumnNumber);
+"local"						InsertToken(Token_Local, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"nil"						InsertToken(Token_Nil, yytext, LineNumber, ColumnNumber);
+"nil"						InsertToken(Token_Nil, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"not"						InsertToken(Token_Not, yytext, LineNumber, ColumnNumber);
+"not"						InsertToken(Token_Not, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"or"						InsertToken(Token_Or, yytext, LineNumber, ColumnNumber);
+"or"						InsertToken(Token_Or, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"repeat"					InsertToken(Token_Repeat, yytext, LineNumber, ColumnNumber);
+"repeat"					InsertToken(Token_Repeat, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"return"					InsertToken(Token_Return, yytext, LineNumber, ColumnNumber);
+"return"					InsertToken(Token_Return, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"then"						InsertToken(Token_Then, yytext, LineNumber, ColumnNumber);
+"then"						InsertToken(Token_Then, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"true"						InsertToken(Token_True, yytext, LineNumber, ColumnNumber);
+"true"						InsertToken(Token_True, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"until"						InsertToken(Token_Until, yytext, LineNumber, ColumnNumber);
+"until"						InsertToken(Token_Until, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"while"						InsertToken(Token_While, yytext, LineNumber, ColumnNumber);
+"while"						InsertToken(Token_While, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"+"							InsertToken(Token_Plus, yytext, LineNumber, ColumnNumber);
+"+"							InsertToken(Token_Plus, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"-"							InsertToken(Token_Minus, yytext, LineNumber, ColumnNumber);
+"-"							InsertToken(Token_Minus, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"*"							InsertToken(Token_Asterisk, yytext, LineNumber, ColumnNumber);
+"*"							InsertToken(Token_Asterisk, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"/"							InsertToken(Token_Slash, yytext, LineNumber, ColumnNumber);
+"/"							InsertToken(Token_Slash, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"%"							InsertToken(Token_Percent, yytext, LineNumber, ColumnNumber);
+"%"							InsertToken(Token_Percent, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"^"							InsertToken(Token_Caret, yytext, LineNumber, ColumnNumber);
+"^"							InsertToken(Token_Caret, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"#"							InsertToken(Token_NumberSign, yytext, LineNumber, ColumnNumber);
+"#"							InsertToken(Token_NumberSign, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"=="						InsertToken(Token_Equal, yytext, LineNumber, ColumnNumber);
+"=="						InsertToken(Token_Equal, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"~="						InsertToken(Token_NotEqual, yytext, LineNumber, ColumnNumber);
+"~="						InsertToken(Token_NotEqual, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"<="						InsertToken(Token_LesserEqual, yytext, LineNumber, ColumnNumber);
+"<="						InsertToken(Token_LesserEqual, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-">="						InsertToken(Token_GreaterEqual, yytext, LineNumber, ColumnNumber);
+">="						InsertToken(Token_GreaterEqual, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"<"							InsertToken(Token_Lesser, yytext, LineNumber, ColumnNumber);
+"<"							InsertToken(Token_Lesser, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-">"							InsertToken(Token_Greater, yytext, LineNumber, ColumnNumber);
+">"							InsertToken(Token_Greater, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"="							InsertToken(Token_Assign, yytext, LineNumber, ColumnNumber);
+"="							InsertToken(Token_Assign, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"("							InsertToken(Token_LeftParen, yytext, LineNumber, ColumnNumber);
+"("							InsertToken(Token_LeftParen, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-")"							InsertToken(Token_RightParen, yytext, LineNumber, ColumnNumber);
+")"							InsertToken(Token_RightParen, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"{"							InsertToken(Token_LeftBrace, yytext, LineNumber, ColumnNumber);
+"{"							InsertToken(Token_LeftBrace, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"}"							InsertToken(Token_RightBrace, yytext, LineNumber, ColumnNumber);
+"}"							InsertToken(Token_RightBrace, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"["							InsertToken(Token_LeftBrack, yytext, LineNumber, ColumnNumber);
+"["							InsertToken(Token_LeftBrack, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"]"							InsertToken(Token_RightBrack, yytext, LineNumber, ColumnNumber);
+"]"							InsertToken(Token_RightBrack, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-";"							InsertToken(Token_Semicolon, yytext, LineNumber, ColumnNumber);
+";"							InsertToken(Token_Semicolon, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-":"							InsertToken(Token_Colon, yytext, LineNumber, ColumnNumber);
+":"							InsertToken(Token_Colon, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-","							InsertToken(Token_Comma, yytext, LineNumber, ColumnNumber);
+","							InsertToken(Token_Comma, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"."							InsertToken(Token_Dot, yytext, LineNumber, ColumnNumber);
+"."							InsertToken(Token_Dot, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-".."						InsertToken(Token_Concat, yytext, LineNumber, ColumnNumber);
+".."						InsertToken(Token_Concat, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-"..."						InsertToken(Token_Varag, yytext, LineNumber, ColumnNumber);
+"..."						InsertToken(Token_Varag, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-{DIGIT}+    				InsertToken(Token_IntNumber, yytext, LineNumber, ColumnNumber);
+{DIGIT}+    				InsertToken(Token_IntNumber, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-{DIGIT}+"."{DIGIT}*        	InsertToken(Token_FloatNumber, yytext, LineNumber, ColumnNumber);
+{DIGIT}+"."{DIGIT}*        	InsertToken(Token_FloatNumber, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-{ID}        				InsertToken(Token_Identifier,yytext, LineNumber, ColumnNumber);
+{ID}        				InsertToken(Token_Identifier,yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-{string} 					InsertToken(Token_String, yytext, LineNumber, ColumnNumber);
+{string} 					InsertToken(Token_String, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
-{ws}         				{if(*yytext == '\n') LineNumber++;}
-
-
+{ws}         				{if(*yytext == '\n') {LineNumber++; ColumnNumber = 1 ;} else ColumnNumber++;}
 
 
 
 
-.           				 printf( "!!!!!!!!! Unrecognized character: %s\n", yytext );
+
+
+.           				 printf( "!!!!!!!!! Unrecognized character: %s\n", yytext ); AddError(LEXERROR,Error_Lexical,LineNumber,ColumnNumber);ColumnNumber++;
 
 
 %%
@@ -194,4 +197,17 @@ bool LexicalAnalyzer::HasInstance()
 void LexicalAnalyzer::SetHasInstnace()
 {
     bHasInstance = true;
+}
+
+int GetCharArrayLength(char* carray)
+{
+	int i = 0;
+	while(carray[i]!='\0')
+		i++;
+	return i;
+}
+
+void AddError(std::string msg,ErrorType type,int line, int column)
+{
+	CompilerMain::GetSharedCompiler()->AddError(msg, type, line,  column);
 }

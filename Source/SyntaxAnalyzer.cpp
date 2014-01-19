@@ -73,10 +73,12 @@
 int GetNextToken (); 
 int ParserLex();
 #define yylex  GetNextToken
+//#define YYERROR yyerror
 void yyerror ( const char *);
 void emptyPrint(YYSTYPE);
 void fullPrint(YYSTYPE);
 void AddScope();
+std::string toString(int val);
 void EmitLine(std::string str);
 bool IsTemp(YYSTYPE val);
 bool IsID(YYSTYPE val);
@@ -89,7 +91,6 @@ void EmitLoadValue(YYSTYPE val);
 YYSTYPE PopLabel();
 void PushLabel(YYSTYPE label);
 
-std::string toString(int );
 void ManageBinop(YYSTYPE binop, YYSTYPE firstOP, YYSTYPE secOP);
 YYSTYPE GetStorage(YYSTYPE idName);
 YYSTYPE FindVariableIndexInTable(YYSTYPE idName);
@@ -530,18 +531,18 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   102,   102,   105,   106,   109,   110,   113,   116,   117,
-     120,   121,   124,   124,   126,   135,   146,   146,   125,   154,
-     155,   157,   156,   162,   163,   173,   177,   176,   205,   204,
-     235,   238,   239,   239,   242,   243,   243,   246,   246,   262,
-     263,   264,   267,   268,   269,   272,   273,   276,   277,   280,
-     281,   284,   285,   289,   290,   291,   292,   293,   294,   295,
-     296,   297,   298,   313,   316,   317,   320,   321,   322,   325,
-     326,   327,   330,   331,   334,   335,   336,   337,   340,   343,
-     346,   349,   350,   351,   352,   355,   356,   357,   360,   361,
-     364,   365,   368,   369,   370,   373,   374,   375,   376,   377,
-     378,   379,   380,   381,   382,   383,   384,   385,   386,   387,
-     390,   391,   392,   395,   396,   399
+       0,   104,   104,   107,   108,   111,   112,   115,   118,   119,
+     122,   123,   126,   126,   128,   137,   148,   148,   127,   156,
+     157,   159,   158,   164,   165,   175,   179,   178,   207,   206,
+     237,   240,   241,   241,   244,   245,   245,   248,   248,   264,
+     265,   266,   269,   270,   271,   274,   275,   278,   279,   282,
+     283,   286,   287,   291,   292,   293,   294,   295,   296,   297,
+     298,   299,   300,   315,   318,   319,   322,   323,   324,   327,
+     328,   329,   332,   333,   336,   337,   338,   339,   342,   345,
+     348,   351,   352,   353,   354,   357,   358,   359,   362,   363,
+     366,   367,   370,   371,   372,   375,   376,   377,   378,   379,
+     380,   381,   382,   383,   384,   385,   386,   387,   388,   389,
+     392,   393,   394,   397,   398,   401
 };
 #endif
 
@@ -1694,28 +1695,28 @@ yyreduce:
   case 14:
 
     {
-						YYSTYPE whileBegin = CreateLabel();
-						YYSTYPE whileEnd = CreateLabel();
-						EmitLine(whileBegin + ":");
-						PushLabel(whileBegin);
-						PushLabel(whileEnd);
-						print1("In While");
-					;}
+                                                YYSTYPE whileBegin = CreateLabel();
+                                                YYSTYPE whileEnd = CreateLabel();
+                                                EmitLine(whileBegin + ":");
+                                                PushLabel(whileBegin);
+                                                PushLabel(whileEnd);
+                                                print1("In While");
+                                        ;}
     break;
 
   case 15:
 
     {
-						print1("EXP in while is " + (yyvsp[(2) - (3)]));
-						
-						//if(!IsTemp($2))
-							//$2=CreateTemp();
-						EmitLoadValue((yyvsp[(2) - (3)]));
-						YYSTYPE whileEnd = PopLabel();
-						PushLabel(whileEnd);
-						EmitLine("ifle " + whileEnd);
+                                                print1("EXP in while is " + (yyvsp[(2) - (3)]));
+                                                
+                                                //if(!IsTemp($2))
+                                                        //$2=CreateTemp();
+                                                EmitLoadValue((yyvsp[(2) - (3)]));
+                                                YYSTYPE whileEnd = PopLabel();
+                                                PushLabel(whileEnd);
+                                                EmitLine("ifle " + whileEnd);
 
-					;}
+                                        ;}
     break;
 
   case 16:
@@ -1731,12 +1732,12 @@ yyreduce:
   case 18:
 
     {
-						YYSTYPE whileEnd = PopLabel();
-						YYSTYPE whileBegin = PopLabel();
-						EmitLine("goto " +whileBegin);
-						EmitLine(whileEnd+ ":");
+                                                YYSTYPE whileEnd = PopLabel();
+                                                YYSTYPE whileBegin = PopLabel();
+                                                EmitLine("goto " +whileBegin);
+                                                EmitLine(whileEnd+ ":");
 
-					;}
+                                        ;}
     break;
 
   case 20:
@@ -1746,9 +1747,9 @@ yyreduce:
 
   case 21:
 
-    {	
-						PushLabel(CreateLabel());
-					;}
+    {        
+                                                PushLabel(CreateLabel());
+                                        ;}
     break;
 
   case 23:
@@ -1758,16 +1759,16 @@ yyreduce:
 
   case 24:
 
-    {	if(IsTemp((yyvsp[(3) - (3)])))
-																{
-																	EmitLine("iload "+ GETINDEX ((yyvsp[(3) - (3)])) ); 
-																	RemoveTemp();
-																}
-																else
-																	EmitLine("ldc " + (yyvsp[(3) - (3)]));
-																EmitLine(";store in " + (yyval));
-																EmitLine("istore " +GETINDEX((yyvsp[(1) - (3)])));	
-																;}
+    {        if(IsTemp((yyvsp[(3) - (3)])))
+                                                                                                                                {
+                                                                                                                                        EmitLine("iload "+ GETINDEX ((yyvsp[(3) - (3)])) ); 
+                                                                                                                                        RemoveTemp();
+                                                                                                                                }
+                                                                                                                                else
+                                                                                                                                        EmitLine("ldc " + (yyvsp[(3) - (3)]));
+                                                                                                                                EmitLine(";store in " + (yyval));
+                                                                                                                                EmitLine("istore " +GETINDEX((yyvsp[(1) - (3)])));        
+                                                                                                                                ;}
     break;
 
   case 25:
@@ -1778,69 +1779,69 @@ yyreduce:
   case 26:
 
     {
-													YYSTYPE forCond = CreateLabel();
-													YYSTYPE	forEnd = CreateLabel();
-													PushLabel(forEnd);
-													PushLabel(forCond);
-													AddEntry((yyvsp[(2) - (6)]),Type_None);
-													EmitLoadValue((yyvsp[(4) - (6)]));
-													EmitLine(";store in " + (yyvsp[(2) - (6)]));  
-													EmitLine("istore " + GETINDEX((yyvsp[(2) - (6)])));
+                                                                                                        YYSTYPE forCond = CreateLabel();
+                                                                                                        YYSTYPE        forEnd = CreateLabel();
+                                                                                                        PushLabel(forEnd);
+                                                                                                        PushLabel(forCond);
+                                                                                                        AddEntry((yyvsp[(2) - (6)]),Type_None);
+                                                                                                        EmitLoadValue((yyvsp[(4) - (6)]));
+                                                                                                        EmitLine(";store in " + (yyvsp[(2) - (6)]));  
+                                                                                                        EmitLine("istore " + GETINDEX((yyvsp[(2) - (6)])));
 
-													EmitLine(forCond + ":");
-													//TODO: semantic check: it must be variable
-													EmitLoadValue((yyvsp[(2) - (6)]));
-													EmitLoadValue((yyvsp[(6) - (6)]));
-													EmitLine("if_icmpgt " +forEnd);
-												;}
+                                                                                                        EmitLine(forCond + ":");
+                                                                                                        //TODO: semantic check: it must be variable
+                                                                                                        EmitLoadValue((yyvsp[(2) - (6)]));
+                                                                                                        EmitLoadValue((yyvsp[(6) - (6)]));
+                                                                                                        EmitLine("if_icmpgt " +forEnd);
+                                                                                                ;}
     break;
 
   case 27:
 
     {
-													EmitLoadValue(toString(1));
-													EmitLoadValue((yyvsp[(2) - (10)]));
-													EmitLine("iadd");
-													EmitLine(";store in " + (yyvsp[(2) - (10)]));  
-													EmitLine("istore " + GETINDEX((yyvsp[(2) - (10)])));
-													EmitLine("goto " + PopLabel());
-													EmitLine(PopLabel() + ":");
-													//TODO: temp Removing 
-												;}
+                                                                                                        EmitLoadValue(toString(1));
+                                                                                                        EmitLoadValue((yyvsp[(2) - (10)]));
+                                                                                                        EmitLine("iadd");
+                                                                                                        EmitLine(";store in " + (yyvsp[(2) - (10)]));  
+                                                                                                        EmitLine("istore " + GETINDEX((yyvsp[(2) - (10)])));
+                                                                                                        EmitLine("goto " + PopLabel());
+                                                                                                        EmitLine(PopLabel() + ":");
+                                                                                                        //TODO: temp Removing 
+                                                                                                ;}
     break;
 
   case 28:
 
     {
-													YYSTYPE forCond = CreateLabel();
-													YYSTYPE	forEnd = CreateLabel();
-													PushLabel(forEnd);
-													PushLabel(forCond);
-													AddEntry((yyvsp[(2) - (8)]),Type_None);
-													EmitLoadValue((yyvsp[(4) - (8)]));
-													EmitLine(";store in " + (yyvsp[(2) - (8)]));  
-													EmitLine("istore " + GETINDEX((yyvsp[(2) - (8)])));
+                                                                                                        YYSTYPE forCond = CreateLabel();
+                                                                                                        YYSTYPE        forEnd = CreateLabel();
+                                                                                                        PushLabel(forEnd);
+                                                                                                        PushLabel(forCond);
+                                                                                                        AddEntry((yyvsp[(2) - (8)]),Type_None);
+                                                                                                        EmitLoadValue((yyvsp[(4) - (8)]));
+                                                                                                        EmitLine(";store in " + (yyvsp[(2) - (8)]));  
+                                                                                                        EmitLine("istore " + GETINDEX((yyvsp[(2) - (8)])));
 
-													EmitLine(forCond + ":");
-													//TODO: semantic check: it must be variable
-													EmitLoadValue((yyvsp[(2) - (8)]));
-													EmitLoadValue((yyvsp[(6) - (8)]));
-													EmitLine("if_icmpgt " +forEnd);
-												;}
+                                                                                                        EmitLine(forCond + ":");
+                                                                                                        //TODO: semantic check: it must be variable
+                                                                                                        EmitLoadValue((yyvsp[(2) - (8)]));
+                                                                                                        EmitLoadValue((yyvsp[(6) - (8)]));
+                                                                                                        EmitLine("if_icmpgt " +forEnd);
+                                                                                                ;}
     break;
 
   case 29:
 
     {
-													EmitLoadValue((yyvsp[(8) - (12)]));
-													EmitLoadValue((yyvsp[(2) - (12)]));
-													EmitLine("iadd");
-													EmitLine(";store in " + (yyvsp[(2) - (12)]));  
-													EmitLine("istore " + GETINDEX((yyvsp[(2) - (12)])));
-													EmitLine("goto " + PopLabel());
-													EmitLine(PopLabel() + ":");
-													//TODO: temp Removing 
-												;}
+                                                                                                        EmitLoadValue((yyvsp[(8) - (12)]));
+                                                                                                        EmitLoadValue((yyvsp[(2) - (12)]));
+                                                                                                        EmitLine("iadd");
+                                                                                                        EmitLine(";store in " + (yyvsp[(2) - (12)]));  
+                                                                                                        EmitLine("istore " + GETINDEX((yyvsp[(2) - (12)])));
+                                                                                                        EmitLine("goto " + PopLabel());
+                                                                                                        EmitLine(PopLabel() + ":");
+                                                                                                        //TODO: temp Removing 
+                                                                                                ;}
     break;
 
   case 30:
@@ -1866,18 +1867,18 @@ yyreduce:
   case 37:
 
     {
-					if(IsTemp((yyvsp[(1) - (1)])))
-					{
-						
-						EmitLine("iload " + GETINDEX((yyvsp[(1) - (1)])));
-						RemoveTemp(); 
-					}
-					else
-						EmitLine("ldc" + (yyvsp[(1) - (1)]));
-					YYSTYPE label = PopLabel();
-					PushLabel(label);
-					EmitLine("ifle " + label);
-				;}
+                                        if(IsTemp((yyvsp[(1) - (1)])))
+                                        {
+                                                
+                                                EmitLine("iload " + GETINDEX((yyvsp[(1) - (1)])));
+                                                RemoveTemp(); 
+                                        }
+                                        else
+                                                EmitLine("ldc" + (yyvsp[(1) - (1)]));
+                                        YYSTYPE label = PopLabel();
+                                        PushLabel(label);
+                                        EmitLine("ifle " + label);
+                                ;}
     break;
 
   case 38:
@@ -1993,20 +1994,20 @@ yyreduce:
   case 62:
 
     {
-									ManageBinop((yyvsp[(2) - (3)]),(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]));
-									(yyval) = CreateTemp();
-									print1("in binop first exp : " +(yyvsp[(1) - (3)]));
-									print1("in binop second exp : "+ (yyvsp[(3) - (3)]));
-									print1("in binop operator : "+ (yyvsp[(2) - (3)]));
-									print1("in binop result : "+ (yyval));
+                                                                        ManageBinop((yyvsp[(2) - (3)]),(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]));
+                                                                        (yyval) = CreateTemp();
+                                                                        print1("in binop first exp : " +(yyvsp[(1) - (3)]));
+                                                                        print1("in binop second exp : "+ (yyvsp[(3) - (3)]));
+                                                                        print1("in binop operator : "+ (yyvsp[(2) - (3)]));
+                                                                        print1("in binop result : "+ (yyval));
 
 
-									
-									EmitLine(";store in " + (yyval));
-									EmitLine("istore " + GETINDEX((yyval)));
-									
+                                                                        
+                                                                        EmitLine(";store in " + (yyval));
+                                                                        EmitLine("istore " + GETINDEX((yyval)));
+                                                                        
 
-								;}
+                                                                ;}
     break;
 
   case 63:
@@ -2492,77 +2493,78 @@ yyreturn:
 
 int GetNextToken()
 {
-	//qDebug("Get Next Token");
-	
-	return CompilerMain::GetSharedCompiler()->GetNextToken();
+        //qDebug("Get Next Token");
+        
+        return CompilerMain::GetSharedCompiler()->GetNextToken();
 }
 
 void AddScope()
 {
-	return CompilerMain::GetSharedCompiler()->AddScope();
+        return CompilerMain::GetSharedCompiler()->AddScope();
 }
 
 void AddEntry(std::string name, SymbolType type)
 {
-	return CompilerMain::GetSharedCompiler()->AddEntry(QString::fromStdString(name),type);
+        return CompilerMain::GetSharedCompiler()->AddEntry(QString::fromStdString(name),type);
 }
 
 void yyerror(const char  *)
 {
+	CompilerMain::GetSharedCompiler()->AddSyntaxError();
 }
 
 
 void EmitLine(std::string str)
 {
-	return CompilerMain::GetSharedCompiler()->EmitLine(str);
+        return CompilerMain::GetSharedCompiler()->EmitLine(str);
 }
 YYSTYPE GetStorage(YYSTYPE idName)
 {
-	YYSTYPE idIndex = FindVariableIndexInTable(idName);
-	return "istore "+idIndex;
+        YYSTYPE idIndex = FindVariableIndexInTable(idName);
+        return "istore "+idIndex;
 }
 
 YYSTYPE FindVariableIndexInTable(YYSTYPE idName)
 {
-	return QString::number(CompilerMain::GetSharedCompiler()->FindVariableIndexInTable(idName)).toStdString();
+        return toString(CompilerMain::GetSharedCompiler()->FindVariableIndexInTable(idName));
 }
 
 bool IsTemp(YYSTYPE val)
 {
-	return CompilerMain::GetSharedCompiler()->IsTemp(val);
+        return CompilerMain::GetSharedCompiler()->IsTemp(val);
 }
 
 bool IsID(YYSTYPE val)
 {
-	return ( (val[0]>='a' &&  val[0]<= 'z')
-			|| (val[0]>='A' &&  val[0]<= 'Z')
-			|| (val[0]=='_') );
+        return ( (val[0]>='a' &&  val[0]<= 'z')
+                        || (val[0]>='A' &&  val[0]<= 'Z')
+                        || (val[0]=='_') );
 }
 
 void RemoveTemp()
 {
-	CompilerMain::GetSharedCompiler()->RemoveTemp();
+        CompilerMain::GetSharedCompiler()->RemoveTemp();
 }
 
 YYSTYPE CreateTemp()
 {
-	return CompilerMain::GetSharedCompiler()->CreateTemp();
+        return CompilerMain::GetSharedCompiler()->CreateTemp();
 }
 
 
 YYSTYPE CreateLabel()
 {
-	return CompilerMain::GetSharedCompiler()->CreateLabel();
+        return CompilerMain::GetSharedCompiler()->CreateLabel();
 }
 
 YYSTYPE PopLabel()
 {
-	return CompilerMain::GetSharedCompiler()->PopLabel();
+        return CompilerMain::GetSharedCompiler()->PopLabel();
 }
 
 void PushLabel(YYSTYPE label)
 {
-	return CompilerMain::GetSharedCompiler()->PushLabel(label);
+        return CompilerMain::GetSharedCompiler()->PushLabel(label);
 }
 
 
@@ -2573,53 +2575,55 @@ SyntaxAnalyzer::SyntaxAnalyzer()
 
 void SyntaxAnalyzer::Analyze()
 {
-	qDebug("Start Syntax Analyzer");
+        qDebug("Start Syntax Analyzer");
     if(yyparse()== 0)
-		qDebug("Success");
-	else
-		qDebug("WTFFFFFFFFF");
+                qDebug("Success");
+    else
+		yyerror("");
+
+                
 }
 
 void emptyPrint(YYSTYPE str)
 {
-	
+        
 }
 
 void ManageBinop(YYSTYPE binop, YYSTYPE firstOP, YYSTYPE secOP)
 {
-	EmitLoadValue(firstOP);
-	EmitLoadValue(secOP);
+        EmitLoadValue(firstOP);
+        EmitLoadValue(secOP);
 
-	if(binop == ">")
-		EmitComparison("if_icmpgt");
+        if(binop == ">")
+                EmitComparison("if_icmpgt");
 
-	else if (binop==">=")
-		EmitComparison("if_icmpge");
+        else if (binop==">=")
+                EmitComparison("if_icmpge");
 
-	else if (binop=="<")
-		EmitComparison("if_icmplt");
+        else if (binop=="<")
+                EmitComparison("if_icmplt");
 
-	else if (binop == "<=")
-		EmitComparison("if_icmple");
+        else if (binop == "<=")
+                EmitComparison("if_icmple");
 
-	else if (binop == "==")
-		EmitComparison("if_icmpeq");
+        else if (binop == "==")
+                EmitComparison("if_icmpeq");
 
-	else if (binop == "~=")
-		EmitComparison("if_icmpne");
+        else if (binop == "~=")
+                EmitComparison("if_icmpne");
 
-	else if (binop == "+")
-		EmitLine("iadd");
-	else if (binop == "-")
-		EmitLine("isub");
-	else if (binop == "/")
-		EmitLine("idiv");
-	else if (binop == "*")
-		EmitLine("imul");
-	else if (binop == "^")
-		EmitLine("ishl");
-	
-	
+        else if (binop == "+")
+                EmitLine("iadd");
+        else if (binop == "-")
+                EmitLine("isub");
+        else if (binop == "/")
+                EmitLine("idiv");
+        else if (binop == "*")
+                EmitLine("imul");
+        else if (binop == "^")
+                EmitLine("ishl");
+        
+        
 
 
 
@@ -2627,34 +2631,35 @@ void ManageBinop(YYSTYPE binop, YYSTYPE firstOP, YYSTYPE secOP)
 
 void EmitComparison(YYSTYPE comparisonVal)
 {
-	YYSTYPE trueLabel = CreateLabel();
-	YYSTYPE endLabel =  CreateLabel();
-	EmitLine(comparisonVal+" "+trueLabel);
-	EmitLoadValue(toString(0));
-	EmitLoadValue("goto " + endLabel);
-	EmitLoadValue(trueLabel + ":");
-	EmitLoadValue(toString(1));
-	EmitLoadValue(endLabel + ":");
+        YYSTYPE trueLabel = CreateLabel();
+        YYSTYPE endLabel =  CreateLabel();
+        EmitLine(comparisonVal+" "+trueLabel);
+        EmitLoadValue(toString(0));
+        EmitLoadValue("goto " + endLabel);
+        EmitLoadValue(trueLabel + ":");
+        EmitLoadValue(toString(1));
+        EmitLoadValue(endLabel + ":");
 }
 
 void EmitLoadValue(YYSTYPE val)
 {
-	if(IsTemp(val))
-	{
-		EmitLine("iload "+ GETINDEX(val));
-		RemoveTemp();
-	}
-	else if(IsID(val))
-	{
-		EmitLine("iload "+ GETINDEX(val));
-	}
-	else
-		EmitLine("ldc "+ val);
-	
+        if(IsTemp(val))
+        {
+                EmitLine("iload "+ GETINDEX(val));
+                RemoveTemp();
+        }
+        else if(IsID(val))
+        {
+                EmitLine("iload "+ GETINDEX(val));
+        }
+        else
+                EmitLine("ldc "+ val);
+        
 }
 
 void fullPrint(YYSTYPE str)
 {
-	qDebug(str.c_str());
+        qDebug(str.c_str());
 }
+
 
