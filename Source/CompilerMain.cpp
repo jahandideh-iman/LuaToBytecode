@@ -2,6 +2,11 @@
 
 CompilerMain* CompilerMain::sharedCompiler;
 
+std::string toString(int val)
+{
+	return QString::number(val).toStdString();
+}
+
 CompilerMain::CompilerMain()
 {
 	if(QFile::exists("OutPut.j"))
@@ -45,7 +50,7 @@ void CompilerMain::AddScope()
 YYSTYPE CompilerMain::CreateLabel()
 {
 	nextLabel++;
-	std::string labelName = LABELNAME+std::to_string(nextLabel);
+	std::string labelName = LABELNAME+toString(nextLabel);
 	return labelName;
 }
 
@@ -53,7 +58,7 @@ YYSTYPE CompilerMain::CreateTemp()
 {
 	nextTemp++;
 
-	std::string tempName = TEMPNAME+std::to_string(nextTemp);
+	std::string tempName = TEMPNAME+toString(nextTemp);
 	AddEntry(QString::fromStdString(tempName)
 		, Type_None);
 	return tempName;
@@ -176,3 +181,4 @@ YYSTYPE CompilerMain::PopLabel()
 {
 	return labelStack.pop();
 }
+

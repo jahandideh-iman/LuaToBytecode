@@ -89,6 +89,7 @@ void EmitLoadValue(YYSTYPE val);
 YYSTYPE PopLabel();
 void PushLabel(YYSTYPE label);
 
+std::string toString(int );
 void ManageBinop(YYSTYPE binop, YYSTYPE firstOP, YYSTYPE secOP);
 YYSTYPE GetStorage(YYSTYPE idName);
 YYSTYPE FindVariableIndexInTable(YYSTYPE idName);
@@ -1797,7 +1798,7 @@ yyreduce:
   case 27:
 
     {
-													EmitLoadValue(std::to_string(1));
+													EmitLoadValue(toString(1));
 													EmitLoadValue((yyvsp[(2) - (10)]));
 													EmitLine("iadd");
 													EmitLine(";store in " + (yyvsp[(2) - (10)]));  
@@ -1951,12 +1952,12 @@ yyreduce:
 
   case 54:
 
-    {(yyval) = std::to_string(1);}
+    {(yyval) = toString(1);}
     break;
 
   case 55:
 
-    {(yyval) = std::to_string(0);}
+    {(yyval) = toString(0);}
     break;
 
   case 56:
@@ -2523,7 +2524,7 @@ YYSTYPE GetStorage(YYSTYPE idName)
 
 YYSTYPE FindVariableIndexInTable(YYSTYPE idName)
 {
-	return std::to_string(CompilerMain::GetSharedCompiler()->FindVariableIndexInTable(idName));
+	return QString::number(CompilerMain::GetSharedCompiler()->FindVariableIndexInTable(idName)).toStdString();
 }
 
 bool IsTemp(YYSTYPE val)
@@ -2629,10 +2630,10 @@ void EmitComparison(YYSTYPE comparisonVal)
 	YYSTYPE trueLabel = CreateLabel();
 	YYSTYPE endLabel =  CreateLabel();
 	EmitLine(comparisonVal+" "+trueLabel);
-	EmitLoadValue(std::to_string(0));
+	EmitLoadValue(toString(0));
 	EmitLoadValue("goto " + endLabel);
 	EmitLoadValue(trueLabel + ":");
-	EmitLoadValue(std::to_string(1));
+	EmitLoadValue(toString(1));
 	EmitLoadValue(endLabel + ":");
 }
 
@@ -2656,5 +2657,4 @@ void fullPrint(YYSTYPE str)
 {
 	qDebug(str.c_str());
 }
-
 
