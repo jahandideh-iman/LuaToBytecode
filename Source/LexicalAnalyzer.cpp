@@ -452,6 +452,9 @@ char *yytext;
 	BaseObject* LexicalAnalyzer::recieverObj;
     InsertTokenHandler LexicalAnalyzer::insertTokenHandler;
     bool LexicalAnalyzer::bHasInstance;
+
+	int GetCharArrayLength(char* carray);
+	void AddError(std::string msg,ErrorType type,int line, int column);
 	
 	#define printf qDebug
 	void InsertToken(yytokentype type, string value, int numberLine, int columnLine)
@@ -459,8 +462,8 @@ char *yytext;
 		LexicalAnalyzer::InsertToken(type,value,numberLine,columnLine);
 	}
 
-	int LineNumber = 1, ColumnNumber = 0;
-#line 464 "../Source/LexicalAnalyzer.cpp"
+	int LineNumber = 1, ColumnNumber = 1;
+#line 467 "../Source/LexicalAnalyzer.cpp"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -611,10 +614,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 35 "luaLex.lex"
+#line 38 "luaLex.lex"
 
 
-#line 618 "../Source/LexicalAnalyzer.cpp"
+#line 621 "../Source/LexicalAnalyzer.cpp"
 
 	if ( yy_init )
 		{
@@ -699,280 +702,280 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 37 "luaLex.lex"
-LineNumber++;/* eat up one-line comments */
+#line 40 "luaLex.lex"
+LineNumber++; ColumnNumber=1;/* eat up one-line comments */
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 40 "luaLex.lex"
-InsertToken(Token_And, yytext, LineNumber, ColumnNumber);
+#line 43 "luaLex.lex"
+InsertToken(Token_And, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 42 "luaLex.lex"
-InsertToken(Token_Break, yytext, LineNumber, ColumnNumber);
+#line 45 "luaLex.lex"
+InsertToken(Token_Break, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 44 "luaLex.lex"
-InsertToken(Token_Do, yytext, LineNumber, ColumnNumber);
+#line 47 "luaLex.lex"
+InsertToken(Token_Do, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 46 "luaLex.lex"
-InsertToken(Token_Else, yytext, LineNumber, ColumnNumber);
+#line 49 "luaLex.lex"
+InsertToken(Token_Else, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 48 "luaLex.lex"
-InsertToken(Token_ElseIf, yytext, LineNumber, ColumnNumber);
+#line 51 "luaLex.lex"
+InsertToken(Token_ElseIf, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 50 "luaLex.lex"
-InsertToken(Token_End, yytext, LineNumber, ColumnNumber);
+#line 53 "luaLex.lex"
+InsertToken(Token_End, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 52 "luaLex.lex"
-InsertToken(Token_False, yytext, LineNumber, ColumnNumber);
+#line 55 "luaLex.lex"
+InsertToken(Token_False, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 54 "luaLex.lex"
-InsertToken(Token_For, yytext, LineNumber, ColumnNumber);
+#line 57 "luaLex.lex"
+InsertToken(Token_For, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 56 "luaLex.lex"
-InsertToken(Token_Function, yytext, LineNumber, ColumnNumber);
+#line 59 "luaLex.lex"
+InsertToken(Token_Function, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 58 "luaLex.lex"
-InsertToken(Token_If, yytext, LineNumber, ColumnNumber);
+#line 61 "luaLex.lex"
+InsertToken(Token_If, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 60 "luaLex.lex"
-InsertToken(Token_In, yytext, LineNumber, ColumnNumber);
+#line 63 "luaLex.lex"
+InsertToken(Token_In, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 62 "luaLex.lex"
-InsertToken(Token_Local, yytext, LineNumber, ColumnNumber);
+#line 65 "luaLex.lex"
+InsertToken(Token_Local, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 64 "luaLex.lex"
-InsertToken(Token_Nil, yytext, LineNumber, ColumnNumber);
+#line 67 "luaLex.lex"
+InsertToken(Token_Nil, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 66 "luaLex.lex"
-InsertToken(Token_Not, yytext, LineNumber, ColumnNumber);
+#line 69 "luaLex.lex"
+InsertToken(Token_Not, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 68 "luaLex.lex"
-InsertToken(Token_Or, yytext, LineNumber, ColumnNumber);
+#line 71 "luaLex.lex"
+InsertToken(Token_Or, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 70 "luaLex.lex"
-InsertToken(Token_Repeat, yytext, LineNumber, ColumnNumber);
+#line 73 "luaLex.lex"
+InsertToken(Token_Repeat, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 72 "luaLex.lex"
-InsertToken(Token_Return, yytext, LineNumber, ColumnNumber);
+#line 75 "luaLex.lex"
+InsertToken(Token_Return, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 74 "luaLex.lex"
-InsertToken(Token_Then, yytext, LineNumber, ColumnNumber);
+#line 77 "luaLex.lex"
+InsertToken(Token_Then, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 76 "luaLex.lex"
-InsertToken(Token_True, yytext, LineNumber, ColumnNumber);
+#line 79 "luaLex.lex"
+InsertToken(Token_True, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 78 "luaLex.lex"
-InsertToken(Token_Until, yytext, LineNumber, ColumnNumber);
+#line 81 "luaLex.lex"
+InsertToken(Token_Until, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 80 "luaLex.lex"
-InsertToken(Token_While, yytext, LineNumber, ColumnNumber);
+#line 83 "luaLex.lex"
+InsertToken(Token_While, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 82 "luaLex.lex"
-InsertToken(Token_Plus, yytext, LineNumber, ColumnNumber);
+#line 85 "luaLex.lex"
+InsertToken(Token_Plus, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 84 "luaLex.lex"
-InsertToken(Token_Minus, yytext, LineNumber, ColumnNumber);
+#line 87 "luaLex.lex"
+InsertToken(Token_Minus, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 86 "luaLex.lex"
-InsertToken(Token_Asterisk, yytext, LineNumber, ColumnNumber);
+#line 89 "luaLex.lex"
+InsertToken(Token_Asterisk, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 88 "luaLex.lex"
-InsertToken(Token_Slash, yytext, LineNumber, ColumnNumber);
+#line 91 "luaLex.lex"
+InsertToken(Token_Slash, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 90 "luaLex.lex"
-InsertToken(Token_Percent, yytext, LineNumber, ColumnNumber);
+#line 93 "luaLex.lex"
+InsertToken(Token_Percent, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 92 "luaLex.lex"
-InsertToken(Token_Caret, yytext, LineNumber, ColumnNumber);
+#line 95 "luaLex.lex"
+InsertToken(Token_Caret, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 94 "luaLex.lex"
-InsertToken(Token_NumberSign, yytext, LineNumber, ColumnNumber);
+#line 97 "luaLex.lex"
+InsertToken(Token_NumberSign, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 96 "luaLex.lex"
-InsertToken(Token_Equal, yytext, LineNumber, ColumnNumber);
+#line 99 "luaLex.lex"
+InsertToken(Token_Equal, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 98 "luaLex.lex"
-InsertToken(Token_NotEqual, yytext, LineNumber, ColumnNumber);
+#line 101 "luaLex.lex"
+InsertToken(Token_NotEqual, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 100 "luaLex.lex"
-InsertToken(Token_LesserEqual, yytext, LineNumber, ColumnNumber);
+#line 103 "luaLex.lex"
+InsertToken(Token_LesserEqual, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 102 "luaLex.lex"
-InsertToken(Token_GreaterEqual, yytext, LineNumber, ColumnNumber);
+#line 105 "luaLex.lex"
+InsertToken(Token_GreaterEqual, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 104 "luaLex.lex"
-InsertToken(Token_Lesser, yytext, LineNumber, ColumnNumber);
+#line 107 "luaLex.lex"
+InsertToken(Token_Lesser, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 106 "luaLex.lex"
-InsertToken(Token_Greater, yytext, LineNumber, ColumnNumber);
+#line 109 "luaLex.lex"
+InsertToken(Token_Greater, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 108 "luaLex.lex"
-InsertToken(Token_Assign, yytext, LineNumber, ColumnNumber);
+#line 111 "luaLex.lex"
+InsertToken(Token_Assign, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 110 "luaLex.lex"
-InsertToken(Token_LeftParen, yytext, LineNumber, ColumnNumber);
+#line 113 "luaLex.lex"
+InsertToken(Token_LeftParen, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 112 "luaLex.lex"
-InsertToken(Token_RightParen, yytext, LineNumber, ColumnNumber);
+#line 115 "luaLex.lex"
+InsertToken(Token_RightParen, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 114 "luaLex.lex"
-InsertToken(Token_LeftBrace, yytext, LineNumber, ColumnNumber);
+#line 117 "luaLex.lex"
+InsertToken(Token_LeftBrace, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 116 "luaLex.lex"
-InsertToken(Token_RightBrace, yytext, LineNumber, ColumnNumber);
+#line 119 "luaLex.lex"
+InsertToken(Token_RightBrace, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 118 "luaLex.lex"
-InsertToken(Token_LeftBrack, yytext, LineNumber, ColumnNumber);
+#line 121 "luaLex.lex"
+InsertToken(Token_LeftBrack, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 120 "luaLex.lex"
-InsertToken(Token_RightBrack, yytext, LineNumber, ColumnNumber);
+#line 123 "luaLex.lex"
+InsertToken(Token_RightBrack, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 122 "luaLex.lex"
-InsertToken(Token_Semicolon, yytext, LineNumber, ColumnNumber);
+#line 125 "luaLex.lex"
+InsertToken(Token_Semicolon, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 124 "luaLex.lex"
-InsertToken(Token_Colon, yytext, LineNumber, ColumnNumber);
+#line 127 "luaLex.lex"
+InsertToken(Token_Colon, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 126 "luaLex.lex"
-InsertToken(Token_Comma, yytext, LineNumber, ColumnNumber);
+#line 129 "luaLex.lex"
+InsertToken(Token_Comma, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 128 "luaLex.lex"
-InsertToken(Token_Dot, yytext, LineNumber, ColumnNumber);
+#line 131 "luaLex.lex"
+InsertToken(Token_Dot, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 130 "luaLex.lex"
-InsertToken(Token_Concat, yytext, LineNumber, ColumnNumber);
+#line 133 "luaLex.lex"
+InsertToken(Token_Concat, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 132 "luaLex.lex"
-InsertToken(Token_Varag, yytext, LineNumber, ColumnNumber);
+#line 135 "luaLex.lex"
+InsertToken(Token_Varag, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 134 "luaLex.lex"
-InsertToken(Token_IntNumber, yytext, LineNumber, ColumnNumber);
+#line 137 "luaLex.lex"
+InsertToken(Token_IntNumber, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 136 "luaLex.lex"
-InsertToken(Token_FloatNumber, yytext, LineNumber, ColumnNumber);
+#line 139 "luaLex.lex"
+InsertToken(Token_FloatNumber, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 138 "luaLex.lex"
-InsertToken(Token_Identifier,yytext, LineNumber, ColumnNumber);
+#line 141 "luaLex.lex"
+InsertToken(Token_Identifier,yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 140 "luaLex.lex"
-InsertToken(Token_String, yytext, LineNumber, ColumnNumber);
+#line 143 "luaLex.lex"
+InsertToken(Token_String, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 142 "luaLex.lex"
-{if(*yytext == '\n') LineNumber++;}
+#line 145 "luaLex.lex"
+{if(*yytext == '\n') {LineNumber++; ColumnNumber = 1 ;} else ColumnNumber++;}
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 149 "luaLex.lex"
-printf( "!!!!!!!!! Unrecognized character: %s\n", yytext );
+#line 152 "luaLex.lex"
+printf( "!!!!!!!!! Unrecognized character: %s\n", yytext ); AddError(LEXERROR,Error_Lexical,LineNumber,ColumnNumber);ColumnNumber++;
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 152 "luaLex.lex"
+#line 155 "luaLex.lex"
 YY_FATAL_ERROR( "flex scanner jammed" );
 	YY_BREAK
-#line 976 "../Source/LexicalAnalyzer.cpp"
+#line 979 "../Source/LexicalAnalyzer.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1858,7 +1861,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 152 "luaLex.lex"
+#line 155 "luaLex.lex"
 
 
 
@@ -1904,4 +1907,17 @@ bool LexicalAnalyzer::HasInstance()
 void LexicalAnalyzer::SetHasInstnace()
 {
     bHasInstance = true;
+}
+
+int GetCharArrayLength(char* carray)
+{
+	int i = 0;
+	while(carray[i]!='\0')
+		i++;
+	return i;
+}
+
+void AddError(std::string msg,ErrorType type,int line, int column)
+{
+	CompilerMain::GetSharedCompiler()->AddError(msg, type, line,  column);
 }

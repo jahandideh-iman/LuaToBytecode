@@ -16,6 +16,9 @@
 
 #define TEMPNAME "$TEMP"
 #define LABELNAME "label"
+#define LEXERROR "Lex Error: " 
+#define SYNERROR "Syntax Error: "
+#define SYMANERROR "Symantic ERROR: "
 
 
 class LexicalAnalyzer;
@@ -23,10 +26,7 @@ class SyntaxAnalyzer;
 
 #define LEXERROR "lex Error "
 
-enum ErrorType
-{
-	Error_Lexical,Error_Syntax,
-};
+
 
 struct Error
 {
@@ -50,8 +50,10 @@ public:
     static CompilerMain* GetSharedCompiler();
 
 	void EmitLine(std::string line);
+
+	void AddSyntaxError();
 	
-	void AddError();
+	void AddError(std::string msg,ErrorType type,int line, int column);
 
 	YYSTYPE CreateTemp();
 	YYSTYPE CreateLabel();
@@ -77,7 +79,7 @@ private:
     LexicalAnalyzer* lexicalAnalyzer;
     SyntaxAnalyzer* syntaxAnalyzer;
 
-	QVector<QString> errorList;
+	QVector<Error*> errorList;
 
 	QStack<YYSTYPE> labelStack;
 

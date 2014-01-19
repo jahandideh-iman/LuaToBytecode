@@ -21,18 +21,24 @@
 //    Token_Semicolon, Token_Colon, Token_Comma , Token_Dot, Token_Concat, Token_Varag,
 //};
 
+enum ErrorType
+{
+	Error_Lexical,Error_Syntax,
+};
+
+
 class Token
 {
 public:
     Token(yytokentype _type, QString _value, int _lineNumber, int _columnNumber);
     void SetTokenType(yytokentype newType);
     void SetTokenValue(QString newValue);
-
+	int lineNumber;
+	int columnNumber;
     QString GetValue();
     yytokentype GetType();
 private:
-	int lineNumber;
-	int columnNumber;
+	
     yytokentype type;
     QString value;
 };

@@ -6,6 +6,7 @@
 #include "Token.h"
 #include "ParserTokens.h"
 #include "BaseObject.h"
+#include "CompilerMain.h"
 
 
 using namespace std;
