@@ -13,7 +13,8 @@ CompilerView::CompilerView()
     QWidget *topFiller = new QWidget;
     topFiller->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    infoLabel = new QLabel("here is the output");
+
+    infoLabel = new QLabel("here is the label");
     infoLabel->setAlignment(Qt::AlignCenter);
 
     QWidget *bottomFiller = new QWidget;
@@ -47,15 +48,17 @@ void CompilerView::newFile()
 
 void CompilerView::open()
 {
-    QString fn = QFileDialog::getOpenFileName();
-    if(QFile::exists(fn))
+    editor->clear();
+    fileName = QFileDialog::getOpenFileName();
+    if(QFile::exists(fileName))
     {
-        file =new QFile(fn);
+        file =new QFile(fileName);
         file->open( QIODevice::ReadWrite);
         input=new QTextStream(file);
         while (!input->atEnd())
         {
             editor->setPlainText(editor->toPlainText()+input->readLine()+'\n');
+            infoLabel->setText(fileName);
         }
     }
     //CompilerMain::GetSharedCompiler()->
@@ -63,7 +66,23 @@ void CompilerView::open()
 
 void CompilerView::save()
 {
-    infoLabel->setText("save");
+    file->remove();
+    QTextDocumentWriter writer(fileName);
+    writer.write(editor->document());
+
+    infoLabel->setText("file saved!");
+}
+
+void CompilerView::saveAs()
+{
+    QString saveAsFileName = QFileDialog::getSaveFileName();
+    QFile saveAsFile(saveAsFileName);
+    saveAsFile.open(QIODevice::ReadWrite);
+    QTextDocumentWriter writer(saveAsFileName);
+    writer.write(editor->document());
+
+    infoLabel->setText("saved as!!");
+
 }
 
 void CompilerView::cut()
@@ -84,9 +103,13 @@ void CompilerView::paste()
 void CompilerView::debug()
 {
 
+    displayError="";
     CompilerMain::GetSharedCompiler()->Compile();
 
-    infoLabel->setText("debug");
+
+
+
+
 }
 
 
@@ -107,6 +130,11 @@ void CompilerView::createActions()
     saveAct = new QAction(tr("Save"), this);
     saveAct->setShortcuts(QKeySequence::Save);
     connect(saveAct, SIGNAL(triggered()), this, SLOT(save()));
+
+
+    saveAsAct = new QAction(tr("Save As..."), this);
+    saveAsAct->setShortcuts(QKeySequence::SaveAs);
+    connect(saveAsAct, SIGNAL(triggered()), this, SLOT(saveAs()));
 
     exitAct = new QAction(tr("Exit"), this);
     exitAct->setShortcut(tr("Ctrl+Q"));
@@ -138,6 +166,7 @@ void CompilerView::createMenus()
     fileMenu->addAction(newAct);
     fileMenu->addAction(openAct);
     fileMenu->addAction(saveAct);
+    fileMenu->addAction(saveAsAct);
 
     fileMenu->addSeparator();
 
@@ -151,4 +180,10 @@ void CompilerView::createMenus()
     debugMenu = menuBar()->addMenu(tr("Debug"));
     debugMenu->addAction(debugAct);
 
+}
+
+void CompilerView::DisplayError(QString error)
+{
+    displayError.append(error+'\n');
+    infoLabel->setText(displayError);
 }
