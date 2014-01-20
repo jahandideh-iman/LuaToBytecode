@@ -12,6 +12,7 @@
 #include "qfile.h"
 #include "qtextstream.h"
 #include "CompilerMain.h"
+#include "QTextDocumentWriter"
 
 class CompilerMain;
 
@@ -23,10 +24,15 @@ public:
     CompilerView();
     TextEditor* editor;
 
+
+    void DisplayError(QString error);
+
 private slots:
     void newFile();
     void open();
     void save();
+    void saveAs();
+
     void cut();
     void copy();
     void paste();
@@ -44,6 +50,7 @@ private:
     QAction* newAct;
     QAction* openAct;
     QAction* saveAct;
+    QAction* saveAsAct;
     QAction* exitAct;
     QAction* cutAct;
     QAction* copyAct;
@@ -55,6 +62,9 @@ private:
 
     QFile* file;
     QTextStream * input;
+    QString fileName;
+
+    QString displayError;
 };
 
 #endif // COMPILERVIEW_H
