@@ -166,12 +166,17 @@ void AddEntry(YYSTYPE name, SymbolType type);
                 |	repetition 
                 |	Token_Repeat unblock                                                                {}
                 |	Token_If 
-                            {        
-								PushLabel(CreateLabel());
+                            {   
+								YYSTYPE nextLabel = CreateLabel();
+								YYSTYPE endLabel = CreateLabel();    
+								PushLabel(endLabel);
+								PushLabel(nextLabel);
                             } 
-					conds Token_End 
+					conds Token_End {/*EmitLine(PopLabel()+ ":");*/} 
                                         
-                | Token_Function funcname funcbody                                        {}
+                | Token_Function funcname
+					 { EmitLine( ".method public static "  + $2);}
+					  funcbody        
 				| lvar Token_Assign exp                
 								{      
 									EmitLoadValue($3);
@@ -184,7 +189,7 @@ void AddEntry(YYSTYPE name, SymbolType type);
         repetition : Token_For name Token_Assign exp Token_Comma exp 
                             {
                                     YYSTYPE forCond = CreateLabel();
-                                    YYSTYPE        forEnd = CreateLabel();
+                                    YYSTYPE forEnd = CreateLabel();
                                     PushLabel(forEnd);
                                     PushLabel(forCond);
                                     AddEntry($2,Type_Int);
@@ -245,18 +250,19 @@ void AddEntry(YYSTYPE name, SymbolType type);
 						}
                 |	condlist Token_Else 
 						{
-							EmitLine(PopLabel()+":");
+							//EmitLine(PopLabel()+":");
 						} 
 					block
                 ;
 
-        condlist :	cond 
-                |	condlist Token_ElseIf 
-						{
+        condlist :	cond {
+							
 							EmitLine(PopLabel() +":");
-							PushLabel(CreateLabel());
+							//PushLabel(CreateLabel());
 						} 
+                |	condlist Token_ElseIf 
 					cond
+
                 ;
 
         cond :		exp	
@@ -265,8 +271,16 @@ void AddEntry(YYSTYPE name, SymbolType type);
                             YYSTYPE label = PopLabel();
                             PushLabel(label);
                             EmitLine("ifle " + label);
+
 						}
-                        Token_Then block                {$$ = $1;}
+                        Token_Then block                {
+															YYSTYPE nextLabel = PopLabel();
+															YYSTYPE endLabel = PopLabel();
+
+															EmitLine("goto " + endLabel);
+															PushLabel(endLabel);
+															PushLabel(nextLabel);
+														}
                 ;
 
         laststat : Token_Break                                {}
@@ -309,10 +323,7 @@ void AddEntry(YYSTYPE name, SymbolType type);
 								{
                                     ManageBinop($2,$1,$3);
                                     $$ = CreateTemp(Type_Int);
-                                    print1("in binop first exp : " +$1);
-                                    print1("in binop second exp : "+ $3);
-                                    print1("in binop operator : "+ $2);
-                                    print1("in binop result : "+ $$);
+                                   
 									EmitStore($$);                                     
 								} 
                 | uniop exp                                {} 
@@ -505,7 +516,10 @@ void SyntaxAnalyzer::StartParsing()
     if(yyparse()== 0)
                 qDebug("Success");
     else
+	{
+		qDebug("Parse Failed");
 		yyerror("");
+	}
 
 	EmitLine("   return");
 	EmitLine(".end method");
@@ -564,10 +578,10 @@ void EmitComparison(YYSTYPE comparisonVal)
         YYSTYPE endLabel =  CreateLabel();
         EmitLine(comparisonVal+" "+trueLabel);
         EmitLoadValue(toString(0));
-        EmitLoadValue("goto " + endLabel);
-        EmitLoadValue(trueLabel + ":");
+        EmitLine("goto " + endLabel);
+        EmitLine(trueLabel + ":");
         EmitLoadValue(toString(1));
-        EmitLoadValue(endLabel + ":");
+        EmitLine(endLabel + ":");
 }
 
 void EmitLoadValue(YYSTYPE val)
@@ -672,3 +686,5 @@ bool IsConstInteger (YYSTYPE val)
 {
 	return (val[0]>='0' && val[0]<='9');
 }
+
+

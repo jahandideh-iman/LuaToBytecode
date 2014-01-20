@@ -115,7 +115,7 @@ int CompilerMain::GetNextToken()
 	
 	Token* token = tokenList->at(nextTokenIndex);
 	yylval = token->GetValue().toStdString();
-	qDebug()<<("Next Token is " + token->GetValue());
+	//qDebug()<<("Next Token is " + token->GetValue());
     nextTokenIndex++;
     return token->GetType();
 }
@@ -154,12 +154,21 @@ void CompilerMain::InitialSyntaxAnalyzer()
 
 void CompilerMain::PushLabel(YYSTYPE label)
 {
+	qDebug()<<"Pushed Label " << QString::fromStdString(label);
 	labelStack.push(label);
 }
 
 YYSTYPE CompilerMain::PopLabel()
 {
-	return labelStack.pop();
+	YYSTYPE label;
+	if(!labelStack.isEmpty())
+		label= labelStack.pop();
+	else 
+		label =  "";
+	qDebug()<<"Poped Label " << QString::fromStdString(label);
+	return label;
+
+
 }
 
 void CompilerMain::SetEditor(TextEditor *_editor)
