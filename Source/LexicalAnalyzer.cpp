@@ -1877,6 +1877,8 @@ LexicalAnalyzer::LexicalAnalyzer()
 
 void LexicalAnalyzer::StartLexing(QString fileName)
 {
+	LineNumber= 1;
+	ColumnNumber = 1;
     yyin = fopen(fileName.toStdString().c_str(), "r" );
     qDebug("file is open");
 

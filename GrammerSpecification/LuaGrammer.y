@@ -20,6 +20,7 @@ void emptyPrint(YYSTYPE);
 void fullPrint(YYSTYPE);
 void AddScope();
 void EmitIntToString(YYSTYPE val);
+void CheckSemantic(YYSTYPE val);
 std::string toString(int val);
 
 void EmitLine(std::string str);
@@ -180,6 +181,7 @@ void AddEntry(YYSTYPE name, SymbolType type);
 				| lvar Token_Assign exp                
 								{      
 									EmitLoadValue($3);
+									CheckSemantic($3);
 									SetTypeByValueType($1,$3);
                                     EmitStore($1);      
                                 }
@@ -322,6 +324,9 @@ void AddEntry(YYSTYPE name, SymbolType type);
                 | exp binop exp
 								{
                                     ManageBinop($2,$1,$3);
+									CheckSemantic($1);
+									CheckSemantic($3);
+
                                     $$ = CreateTemp(Type_Int);
                                    
 									EmitStore($$);                                     
@@ -505,6 +510,7 @@ SyntaxAnalyzer::SyntaxAnalyzer()
 
 void SyntaxAnalyzer::StartParsing()
 {
+
 	EmitLine(".class public OutPut");
 	EmitLine(".super java/lang/Object");
 	EmitLine(".method public static main([Ljava/lang/String;)V");
@@ -518,7 +524,7 @@ void SyntaxAnalyzer::StartParsing()
     else
 	{
 		qDebug("Parse Failed");
-		yyerror("");
+		//yyerror("");
 	}
 
 	EmitLine("   return");
@@ -687,4 +693,14 @@ bool IsConstInteger (YYSTYPE val)
 	return (val[0]>='0' && val[0]<='9');
 }
 
+
+void CheckSemantic(YYSTYPE val)
+{
+	if(IsConstInteger(val) || IsConstString(val))
+		return;
+	
+	if(GETINDEX(val)=="-1")
+		CompilerMain::GetSharedCompiler()->AddSemanticError();
+		
+}
 

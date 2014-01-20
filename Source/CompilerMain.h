@@ -22,7 +22,7 @@
 #define LABELNAME "label"
 #define LEXERROR "Lex Error: " 
 #define SYNERROR "Syntax Error: "
-#define SYMANERROR "Symantic ERROR: "
+#define SYMANERROR "Semantic ERROR :"
 
 
 class LexicalAnalyzer;
@@ -60,6 +60,7 @@ public:
 	void EmitLine(std::string line);
 
 	void AddSyntaxError();
+	void AddSemanticError();
 	
 	void AddError(std::string msg,ErrorType type,int line, int column);
 
@@ -79,6 +80,8 @@ public:
 	SymbolEntry* FindSymbolByName(QString name);
 
 	SymbolType GetType(YYSTYPE val);
+
+	void DisplayErrors();
 
 
 

@@ -79,6 +79,7 @@ void emptyPrint(YYSTYPE);
 void fullPrint(YYSTYPE);
 void AddScope();
 void EmitIntToString(YYSTYPE val);
+void CheckSemantic(YYSTYPE val);
 std::string toString(int val);
 
 void EmitLine(std::string str);
@@ -536,17 +537,17 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   114,   114,   117,   118,   121,   122,   125,   128,   129,
-     132,   133,   136,   137,   139,   147,   138,   166,   167,   169,
-     168,   178,   177,   180,   186,   190,   189,   216,   215,   244,
-     247,   252,   251,   258,   263,   269,   268,   286,   287,   288,
-     291,   292,   293,   296,   297,   300,   301,   304,   305,   308,
-     309,   313,   314,   315,   316,   317,   318,   319,   320,   321,
-     322,   329,   332,   333,   340,   341,   351,   352,   355,   356,
-     359,   360,   361,   362,   365,   368,   371,   374,   375,   376,
-     377,   380,   391,   392,   393,   394,   395,   396,   397,   398,
-     399,   400,   401,   402,   403,   404,   405,   408,   409,   410,
-     413,   414,   417
+       0,   115,   115,   118,   119,   122,   123,   126,   129,   130,
+     133,   134,   137,   138,   140,   148,   139,   167,   168,   170,
+     169,   179,   178,   181,   188,   192,   191,   218,   217,   246,
+     249,   254,   253,   260,   265,   271,   270,   288,   289,   290,
+     293,   294,   295,   298,   299,   302,   303,   306,   307,   310,
+     311,   315,   316,   317,   318,   319,   320,   321,   322,   323,
+     324,   334,   337,   338,   345,   346,   356,   357,   360,   361,
+     364,   365,   366,   367,   370,   373,   376,   379,   380,   381,
+     382,   385,   396,   397,   398,   399,   400,   401,   402,   403,
+     404,   405,   406,   407,   408,   409,   410,   413,   414,   415,
+     418,   419,   422
 };
 #endif
 
@@ -1731,6 +1732,7 @@ yyreduce:
 
     {      
 									EmitLoadValue((yyvsp[(3) - (3)]));
+									CheckSemantic((yyvsp[(3) - (3)]));
 									SetTypeByValueType((yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]));
                                     EmitStore((yyvsp[(1) - (3)]));      
                                 ;}
@@ -1965,6 +1967,9 @@ yyreduce:
 
     {
                                     ManageBinop((yyvsp[(2) - (3)]),(yyvsp[(1) - (3)]),(yyvsp[(3) - (3)]));
+									CheckSemantic((yyvsp[(1) - (3)]));
+									CheckSemantic((yyvsp[(3) - (3)]));
+
                                     (yyval) = CreateTemp(Type_Int);
                                    
 									EmitStore((yyval));                                     
@@ -2492,6 +2497,7 @@ SyntaxAnalyzer::SyntaxAnalyzer()
 
 void SyntaxAnalyzer::StartParsing()
 {
+
 	EmitLine(".class public OutPut");
 	EmitLine(".super java/lang/Object");
 	EmitLine(".method public static main([Ljava/lang/String;)V");
@@ -2505,7 +2511,7 @@ void SyntaxAnalyzer::StartParsing()
     else
 	{
 		qDebug("Parse Failed");
-		yyerror("");
+		//yyerror("");
 	}
 
 	EmitLine("   return");
@@ -2674,5 +2680,15 @@ bool IsConstInteger (YYSTYPE val)
 	return (val[0]>='0' && val[0]<='9');
 }
 
+
+void CheckSemantic(YYSTYPE val)
+{
+	if(IsConstInteger(val) || IsConstString(val))
+		return;
+	
+	if(GETINDEX(val)=="-1")
+		CompilerMain::GetSharedCompiler()->AddSemanticError();
+		
+}
 
 

@@ -178,6 +178,7 @@ void CompilerMain::SetEditor(TextEditor *_editor)
 
 void CompilerMain::Compile()
 {
+	errorList.clear();
 	if(QFile::exists("OutPut.j"))
 		QFile::remove("OutPut.j");
 	output = new QFile("OutPut.j");
@@ -204,9 +205,18 @@ void CompilerMain::Compile()
 	input.close();
 
 	lexicalAnalyzer->StartLexing("TEMPFILE");
-
-
 	syntaxAnalyzer->StartParsing();
+
+	if(!errorList.isEmpty())
+	{
+		if(QFile::exists("OutPut.j"))
+		QFile::remove("OutPut.j");
+		DisplayErrors();
+	}
+	else
+	{
+		mainwindow->statusBar()->showMessage("Build Successful!");
+	}
 
 	if(QFile::exists("TEMPFILE"))
 		QFile::remove("TEMPFILE");
@@ -229,6 +239,13 @@ void CompilerMain::AddSyntaxError()
 {
 	Token* errorToken = tokenList->at(nextTokenIndex-1);
 	AddError(SYNERROR,Error_Syntax, errorToken->lineNumber, errorToken->columnNumber);
+
+}
+
+void CompilerMain::AddSemanticError()
+{
+	Token* errorToken = tokenList->at(nextTokenIndex-1);
+	AddError(SYMANERROR + errorToken->GetValue().toStdString() + ":",Error_Semantic, errorToken->lineNumber, errorToken->columnNumber);
 
 }
 
@@ -261,4 +278,15 @@ SymbolType CompilerMain::GetType(YYSTYPE val)
 		return symbol->type;
 
 	return Type_None;
+}
+
+void CompilerMain::DisplayErrors()
+{
+	Error * error;
+	for(int i = 0 ; i< errorList.size();i++)
+	{
+		error = errorList.at(i);
+		mainwindow->DisplayError(error->msg+ "at Line " + QString::number(error->lineNumber) );
+	}
+
 }

@@ -23,7 +23,7 @@
 
 enum ErrorType
 {
-	Error_Lexical,Error_Syntax,
+	Error_Lexical,Error_Syntax,Error_Semantic
 };
 
 

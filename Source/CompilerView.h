@@ -14,6 +14,7 @@
 #include "CompilerMain.h"
 #include "QTextDocumentWriter"
 #include "qaction.h"
+#include "QtANGLE\GLES2\gl2.h"
 
 
 class CompilerMain;
@@ -33,7 +34,7 @@ private slots:
     void newFile();
     void open();
     void save();
-    void saveAs();
+    //void saveAs();
 
     void cut();
     void copy();
@@ -52,7 +53,7 @@ private:
     QAction* newAct;
     QAction* openAct;
     QAction* saveAct;
-    QAction* saveAsAct;
+    //QAction* saveAsAct;
     QAction* exitAct;
     QAction* cutAct;
     QAction* copyAct;
