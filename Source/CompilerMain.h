@@ -15,6 +15,7 @@
 #include "qstack.h"
 #include "TextEditor.h"
 
+
 #include "CompilerView.h"
 
 #define TEMPNAME "$TEMP"
@@ -62,16 +63,22 @@ public:
 	
 	void AddError(std::string msg,ErrorType type,int line, int column);
 
-	YYSTYPE CreateTemp();
+	YYSTYPE CreateTemp(SymbolType type);
 	YYSTYPE CreateLabel();
 	bool IsTemp(YYSTYPE val);
 	void RemoveTemp();
+
+	void SetTempType(QString name, SymbolType type);
 
 	bool IsInTable(QString idName);
 
 	void AddScope();
 
-	void AddEntry(QString name,SymbolType type);
+	bool AddEntry(QString name,SymbolType type);
+
+	SymbolEntry* FindSymbolByName(QString name);
+
+	SymbolType GetType(YYSTYPE val);
 
 
 

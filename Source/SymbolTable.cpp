@@ -25,3 +25,14 @@ int SymbolTable::FindVariableIndexInTable(QString idName)
 	}
 	return -1;
 }
+
+SymbolEntry* SymbolTable::FindSymbolByName(QString idName)
+{
+	for( int i = 0 ; i<symbols.size(); i++)
+	{
+		if(symbols.at(i)->name == idName)
+			return symbols.at(i);
+	}
+	return NULL;
+}
+

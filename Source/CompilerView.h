@@ -13,12 +13,14 @@
 #include "qtextstream.h"
 #include "CompilerMain.h"
 #include "QTextDocumentWriter"
+#include "qaction.h"
+
 
 class CompilerMain;
 
 class CompilerView : public QMainWindow
 {
-    Q_OBJECT
+   Q_OBJECT
 
 public:
     CompilerView();
