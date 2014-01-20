@@ -286,24 +286,24 @@ static void yy_fatal_error YY_PROTO(( yyconst char msg[] ));
 	*yy_cp = '\0'; \
 	yy_c_buf_p = yy_cp;
 
-#define YY_NUM_RULES 55
-#define YY_END_OF_BUFFER 56
-static yyconst short int yy_accept[122] =
+#define YY_NUM_RULES 56
+#define YY_END_OF_BUFFER 57
+static yyconst short int yy_accept[127] =
     {   0,
-        0,    0,   56,   54,   53,   53,   54,   29,   27,   37,
-       38,   25,   23,   45,   24,   46,   26,   49,   44,   43,
-       34,   36,   35,   51,   41,   42,   28,   51,   51,   51,
-       51,   51,   51,   51,   51,   51,   51,   51,   51,   51,
-       39,   40,   54,    0,    0,    0,   47,   50,   49,   32,
-       30,   33,   51,   51,   51,    4,   51,   51,   51,   51,
-       51,   11,   12,   51,   51,   51,   16,   51,   51,   51,
-       51,   51,   31,   52,    0,    1,   48,   50,    2,   51,
-       51,    7,   51,    9,   51,   51,   14,   15,   51,   51,
-       51,   51,   51,   51,   51,    5,   51,   51,   51,   51,
+        0,    0,   57,   55,   54,   54,   55,   30,   28,   38,
+       39,   26,   24,   46,   25,   47,   27,   50,   45,   44,
+       35,   37,   36,   52,   42,   43,   29,   52,   52,   52,
+       52,   52,   52,   52,   52,   52,   52,   52,   52,   52,
+       52,   40,   41,   55,    0,    0,    0,   48,   51,   50,
+       33,   31,   34,   52,   52,   52,    4,   52,   52,   52,
+       52,   52,   11,   12,   52,   52,   52,   16,   52,   52,
+       52,   52,   52,   52,   32,   53,    0,    1,   49,   51,
+        2,   52,   52,    7,   52,    9,   52,   52,   14,   15,
+       52,   52,   52,   52,   52,   52,   52,   52,    5,   52,
 
-       51,   19,   20,   51,   51,    3,   51,    8,   51,   13,
-       51,   51,   21,   22,    6,   51,   17,   18,   51,   10,
-        0
+       52,   52,   52,   52,   52,   19,   20,   52,   52,    3,
+       52,    8,   52,   13,   23,   52,   52,   21,   22,    6,
+       52,   17,   18,   52,   10,    0
     } ;
 
 static yyconst int yy_ec[256] =
@@ -347,88 +347,88 @@ static yyconst int yy_meta[47] =
         3,    3,    3,    1,    1,    1
     } ;
 
-static yyconst short int yy_base[125] =
+static yyconst short int yy_base[130] =
     {   0,
-        0,    0,  135,  136,  136,  136,  127,  136,  136,  136,
-      136,  136,  136,  136,  120,  118,  136,   33,  136,  136,
-      111,  110,  109,    0,  136,  136,  136,   92,   88,   89,
-       15,   22,   21,   88,   21,   85,   93,   21,   86,   89,
-      136,  136,  100,   58,  112,  115,  103,  100,   47,  136,
-      136,  136,    0,   86,   84,    0,   73,   83,   76,   71,
-       73,    0,    0,   80,   72,   65,    0,   28,   75,   62,
-       62,   69,  136,   63,   98,  136,  136,   84,    0,   73,
-       68,    0,   57,    0,   68,   69,    0,    0,   64,   51,
-       56,   61,   57,   54,   54,   54,   56,   44,   49,   57,
+        0,    0,  139,  140,  140,  140,  131,  140,  140,  140,
+      140,  140,  140,  140,  124,  122,  140,   33,  140,  140,
+      115,  114,  113,    0,  140,  140,  140,   96,   92,   93,
+       15,   22,   21,   92,   21,   89,   88,   96,   21,   89,
+       92,  140,  140,  103,   58,  115,  118,  106,  103,   47,
+      140,  140,  140,    0,   89,   87,    0,   76,   86,   79,
+       74,   76,    0,    0,   83,   75,   68,    0,   75,   28,
+       77,   64,   64,   71,  140,   63,  100,  140,  140,   86,
+        0,   75,   70,    0,   59,    0,   70,   71,    0,    0,
+       60,   65,   52,   57,   62,   58,   55,   55,   55,   57,
 
-       43,    0,    0,   46,   50,    0,   48,    0,   45,    0,
-       36,   36,    0,    0,    0,   31,    0,    0,   20,    0,
-      136,   70,   52,   73
+       45,   50,   43,   57,   43,    0,    0,   46,   50,    0,
+       48,    0,   45,    0,    0,   36,   36,    0,    0,    0,
+       31,    0,    0,   20,    0,  140,   70,   52,   73
     } ;
 
-static yyconst short int yy_def[125] =
+static yyconst short int yy_def[130] =
     {   0,
-      121,    1,  121,  121,  121,  121,  122,  121,  121,  121,
-      121,  121,  121,  121,  121,  121,  121,  121,  121,  121,
-      121,  121,  121,  123,  121,  121,  121,  123,  123,  123,
-      123,  123,  123,  123,  123,  123,  123,  123,  123,  123,
-      121,  121,  121,  122,  121,  124,  121,  121,  121,  121,
-      121,  121,  123,  123,  123,  123,  123,  123,  123,  123,
-      123,  123,  123,  123,  123,  123,  123,  123,  123,  123,
-      123,  123,  121,  122,  124,  121,  121,  121,  123,  123,
-      123,  123,  123,  123,  123,  123,  123,  123,  123,  123,
-      123,  123,  123,  123,  123,  123,  123,  123,  123,  123,
+      126,    1,  126,  126,  126,  126,  127,  126,  126,  126,
+      126,  126,  126,  126,  126,  126,  126,  126,  126,  126,
+      126,  126,  126,  128,  126,  126,  126,  128,  128,  128,
+      128,  128,  128,  128,  128,  128,  128,  128,  128,  128,
+      128,  126,  126,  126,  127,  126,  129,  126,  126,  126,
+      126,  126,  126,  128,  128,  128,  128,  128,  128,  128,
+      128,  128,  128,  128,  128,  128,  128,  128,  128,  128,
+      128,  128,  128,  128,  126,  127,  129,  126,  126,  126,
+      128,  128,  128,  128,  128,  128,  128,  128,  128,  128,
+      128,  128,  128,  128,  128,  128,  128,  128,  128,  128,
 
-      123,  123,  123,  123,  123,  123,  123,  123,  123,  123,
-      123,  123,  123,  123,  123,  123,  123,  123,  123,  123,
-        0,  121,  121,  121
+      128,  128,  128,  128,  128,  128,  128,  128,  128,  128,
+      128,  128,  128,  128,  128,  128,  128,  128,  128,  128,
+      128,  128,  128,  128,  128,    0,  126,  126,  126
     } ;
 
-static yyconst short int yy_nxt[183] =
+static yyconst short int yy_nxt[187] =
     {   0,
         4,    5,    6,    7,    8,    9,    4,   10,   11,   12,
        13,   14,   15,   16,   17,   18,   19,   20,   21,   22,
        23,   24,   25,   26,   27,   28,   29,   24,   30,   31,
-       32,   24,   33,   24,   34,   35,   36,   24,   37,   24,
-       38,   39,   40,   41,   42,   43,   48,   59,   49,   57,
-       58,   62,   69,   65,   53,  120,   63,   66,   60,   70,
-       48,   74,   49,   61,   45,   89,   74,  119,   90,   45,
-       44,  118,   44,   75,   75,   75,  117,  116,  115,  114,
-      113,  112,  111,  110,  109,  108,  107,  106,  105,  104,
-      103,  102,  101,  100,   99,   98,   97,   96,   95,   78,
+       32,   24,   33,   24,   34,   35,   36,   37,   38,   24,
+       39,   40,   41,   42,   43,   44,   49,   60,   50,   58,
+       59,   63,   71,   66,   54,  125,   64,   67,   61,   72,
+       49,   76,   50,   62,   46,   92,   76,  124,   93,   46,
+       45,  123,   45,   77,   77,   77,  122,  121,  120,  119,
+      118,  117,  116,  115,  114,  113,  112,  111,  110,  109,
+      108,  107,  106,  105,  104,  103,  102,  101,  100,   99,
 
-       76,   94,   93,   92,   91,   88,   87,   86,   85,   84,
-       83,   82,   81,   80,   79,   78,   77,   76,   44,   73,
-       72,   71,   68,   67,   64,   56,   55,   54,   52,   51,
-       50,   47,   46,   45,  121,    3,  121,  121,  121,  121,
-      121,  121,  121,  121,  121,  121,  121,  121,  121,  121,
-      121,  121,  121,  121,  121,  121,  121,  121,  121,  121,
-      121,  121,  121,  121,  121,  121,  121,  121,  121,  121,
-      121,  121,  121,  121,  121,  121,  121,  121,  121,  121,
-      121,  121
+       98,   80,   78,   97,   96,   95,   94,   91,   90,   89,
+       88,   87,   86,   85,   84,   83,   82,   81,   80,   79,
+       78,   45,   75,   74,   73,   70,   69,   68,   65,   57,
+       56,   55,   53,   52,   51,   48,   47,   46,  126,    3,
+      126,  126,  126,  126,  126,  126,  126,  126,  126,  126,
+      126,  126,  126,  126,  126,  126,  126,  126,  126,  126,
+      126,  126,  126,  126,  126,  126,  126,  126,  126,  126,
+      126,  126,  126,  126,  126,  126,  126,  126,  126,  126,
+      126,  126,  126,  126,  126,  126
     } ;
 
-static yyconst short int yy_chk[183] =
+static yyconst short int yy_chk[187] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,   18,   32,   18,   31,
-       31,   33,   38,   35,  123,  119,   33,   35,   32,   38,
-       49,   44,   49,   32,   44,   68,   74,  116,   68,   74,
-      122,  112,  122,  124,  124,  124,  111,  109,  107,  105,
-      104,  101,  100,   99,   98,   97,   96,   95,   94,   93,
-       92,   91,   90,   89,   86,   85,   83,   81,   80,   78,
+       31,   33,   39,   35,  128,  124,   33,   35,   32,   39,
+       50,   45,   50,   32,   45,   70,   76,  121,   70,   76,
+      127,  117,  127,  129,  129,  129,  116,  113,  111,  109,
+      108,  105,  104,  103,  102,  101,  100,   99,   98,   97,
+       96,   95,   94,   93,   92,   91,   88,   87,   85,   83,
 
-       75,   72,   71,   70,   69,   66,   65,   64,   61,   60,
-       59,   58,   57,   55,   54,   48,   47,   46,   45,   43,
-       40,   39,   37,   36,   34,   30,   29,   28,   23,   22,
-       21,   16,   15,    7,    3,  121,  121,  121,  121,  121,
-      121,  121,  121,  121,  121,  121,  121,  121,  121,  121,
-      121,  121,  121,  121,  121,  121,  121,  121,  121,  121,
-      121,  121,  121,  121,  121,  121,  121,  121,  121,  121,
-      121,  121,  121,  121,  121,  121,  121,  121,  121,  121,
-      121,  121
+       82,   80,   77,   74,   73,   72,   71,   69,   67,   66,
+       65,   62,   61,   60,   59,   58,   56,   55,   49,   48,
+       47,   46,   44,   41,   40,   38,   37,   36,   34,   30,
+       29,   28,   23,   22,   21,   16,   15,    7,    3,  126,
+      126,  126,  126,  126,  126,  126,  126,  126,  126,  126,
+      126,  126,  126,  126,  126,  126,  126,  126,  126,  126,
+      126,  126,  126,  126,  126,  126,  126,  126,  126,  126,
+      126,  126,  126,  126,  126,  126,  126,  126,  126,  126,
+      126,  126,  126,  126,  126,  126
     } ;
 
 static yy_state_type yy_last_accepting_state;
@@ -668,13 +668,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 122 )
+				if ( yy_current_state >= 127 )
 					yy_c = yy_meta[(unsigned int) yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 136 );
+		while ( yy_base[yy_current_state] != 140 );
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
@@ -813,169 +813,174 @@ InsertToken(Token_While, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCha
 case 23:
 YY_RULE_SETUP
 #line 85 "luaLex.lex"
-InsertToken(Token_Plus, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_Print, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 87 "luaLex.lex"
-InsertToken(Token_Minus, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_Plus, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 89 "luaLex.lex"
-InsertToken(Token_Asterisk, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_Minus, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
 #line 91 "luaLex.lex"
-InsertToken(Token_Slash, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_Asterisk, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 93 "luaLex.lex"
-InsertToken(Token_Percent, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_Slash, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 95 "luaLex.lex"
-InsertToken(Token_Caret, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_Percent, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 97 "luaLex.lex"
-InsertToken(Token_NumberSign, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_Caret, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 99 "luaLex.lex"
-InsertToken(Token_Equal, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_NumberSign, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
 #line 101 "luaLex.lex"
-InsertToken(Token_NotEqual, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_Equal, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
 #line 103 "luaLex.lex"
-InsertToken(Token_LesserEqual, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_NotEqual, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
 #line 105 "luaLex.lex"
-InsertToken(Token_GreaterEqual, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_LesserEqual, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
 #line 107 "luaLex.lex"
-InsertToken(Token_Lesser, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_GreaterEqual, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
 #line 109 "luaLex.lex"
-InsertToken(Token_Greater, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_Lesser, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
 #line 111 "luaLex.lex"
-InsertToken(Token_Assign, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_Greater, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
 #line 113 "luaLex.lex"
-InsertToken(Token_LeftParen, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_Assign, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
 #line 115 "luaLex.lex"
-InsertToken(Token_RightParen, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_LeftParen, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
 #line 117 "luaLex.lex"
-InsertToken(Token_LeftBrace, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_RightParen, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
 #line 119 "luaLex.lex"
-InsertToken(Token_RightBrace, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_LeftBrace, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
 #line 121 "luaLex.lex"
-InsertToken(Token_LeftBrack, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_RightBrace, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
 #line 123 "luaLex.lex"
-InsertToken(Token_RightBrack, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_LeftBrack, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
 #line 125 "luaLex.lex"
-InsertToken(Token_Semicolon, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_RightBrack, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
 #line 127 "luaLex.lex"
-InsertToken(Token_Colon, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_Semicolon, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
 #line 129 "luaLex.lex"
-InsertToken(Token_Comma, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_Colon, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
 #line 131 "luaLex.lex"
-InsertToken(Token_Dot, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_Comma, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
 #line 133 "luaLex.lex"
-InsertToken(Token_Concat, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_Dot, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
 #line 135 "luaLex.lex"
-InsertToken(Token_Varag, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_Concat, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
 #line 137 "luaLex.lex"
-InsertToken(Token_IntNumber, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_Varag, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
 #line 139 "luaLex.lex"
-InsertToken(Token_FloatNumber, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_IntNumber, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
 #line 141 "luaLex.lex"
-InsertToken(Token_Identifier,yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_FloatNumber, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
 #line 143 "luaLex.lex"
-InsertToken(Token_String, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+InsertToken(Token_Identifier,yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
 #line 145 "luaLex.lex"
-{if(*yytext == '\n') {LineNumber++; ColumnNumber = 1 ;} else ColumnNumber++;}
+InsertToken(Token_String, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 152 "luaLex.lex"
-printf( "!!!!!!!!! Unrecognized character: %s\n", yytext ); AddError(LEXERROR,Error_Lexical,LineNumber,ColumnNumber);ColumnNumber++;
+#line 149 "luaLex.lex"
+{if(*yytext == '\n') {LineNumber++; ColumnNumber = 1 ;} else ColumnNumber++;}
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 155 "luaLex.lex"
+#line 156 "luaLex.lex"
+printf( "!!!!!!!!! Unrecognized character: %s\n", yytext ); AddError(LEXERROR,Error_Lexical,LineNumber,ColumnNumber);ColumnNumber++;
+	YY_BREAK
+case 56:
+YY_RULE_SETUP
+#line 159 "luaLex.lex"
 YY_FATAL_ERROR( "flex scanner jammed" );
 	YY_BREAK
-#line 979 "../Source/LexicalAnalyzer.cpp"
+#line 984 "../Source/LexicalAnalyzer.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1267,7 +1272,7 @@ static yy_state_type yy_get_previous_state()
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 122 )
+			if ( yy_current_state >= 127 )
 				yy_c = yy_meta[(unsigned int) yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
@@ -1302,11 +1307,11 @@ yy_state_type yy_current_state;
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 122 )
+		if ( yy_current_state >= 127 )
 			yy_c = yy_meta[(unsigned int) yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
-	yy_is_jam = (yy_current_state == 121);
+	yy_is_jam = (yy_current_state == 126);
 
 	return yy_is_jam ? 0 : yy_current_state;
 	}
@@ -1861,7 +1866,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 155 "luaLex.lex"
+#line 159 "luaLex.lex"
 
 
 
@@ -1876,6 +1881,7 @@ void LexicalAnalyzer::StartLexing(QString fileName)
     qDebug("file is open");
 
     yylex();
+	InsertToken(Token_EndOfFile,"",LineNumber,  ColumnNumber);
 }
 
 void LexicalAnalyzer::SetTokenInsertHandler(BaseObject* main,InsertTokenHandler handler)

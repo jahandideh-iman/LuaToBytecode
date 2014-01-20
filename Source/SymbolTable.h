@@ -6,7 +6,7 @@
 
 enum SymbolType
 {
-	Type_None, Type_Int, Type_String, Type_Float,
+	Type_None, Type_Int, Type_String, Type_Float, Type_Array,Type_ArrayElement
 };
 
 struct SymbolEntry
@@ -23,6 +23,7 @@ public:
 	SymbolTable(SymbolTable* parent);
 	void AddEntry(SymbolEntry* entry);
 	int FindVariableIndexInTable(QString idName);
+	SymbolEntry* FindSymbolByName(QString idName);
 	SymbolTable* parent;
 
 private:

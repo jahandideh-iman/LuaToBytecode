@@ -82,6 +82,8 @@ comment		"--"(.*)
 
 "while"						InsertToken(Token_While, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
+"print"						InsertToken(Token_Print, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
+
 "+"							InsertToken(Token_Plus, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
 "-"							InsertToken(Token_Minus, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
@@ -142,6 +144,8 @@ comment		"--"(.*)
 
 {string} 					InsertToken(Token_String, yytext, LineNumber, ColumnNumber);ColumnNumber+= GetCharArrayLength(yytext);
 
+
+
 {ws}         				{if(*yytext == '\n') {LineNumber++; ColumnNumber = 1 ;} else ColumnNumber++;}
 
 
@@ -166,6 +170,7 @@ void LexicalAnalyzer::StartLexing(QString fileName)
     qDebug("file is open");
 
     yylex();
+	InsertToken(Token_EndOfFile,"",LineNumber,  ColumnNumber);
 }
 
 void LexicalAnalyzer::SetTokenInsertHandler(BaseObject* main,InsertTokenHandler handler)

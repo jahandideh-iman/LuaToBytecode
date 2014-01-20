@@ -16,7 +16,7 @@ public:
 	
 
 
-    void Analyze();
+    void StartParsing();
 };
 
 #endif // SYNTAXANALYZER_H

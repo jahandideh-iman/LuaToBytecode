@@ -7,7 +7,7 @@ CompilerView::CompilerView()
     setCentralWidget(widget);
 
     //editor
-    editor=new TextEditor;
+    editor=new TextEditor(this);
     CompilerMain::GetSharedCompiler()->SetEditor(editor);
 //-----------checking later
     QWidget *topFiller = new QWidget;

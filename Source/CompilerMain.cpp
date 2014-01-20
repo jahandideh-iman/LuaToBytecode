@@ -12,21 +12,9 @@ CompilerMain::CompilerMain()
     SetSharedCompiler(this);
     mainwindow =new CompilerView;
     mainwindow->show();
-	if(QFile::exists("OutPut.j"))
-		QFile::remove("OutPut.j");
-	output = new QFile("OutPut.j");
-	output->open( QIODevice::WriteOnly);
-	outStream = new QTextStream(output);
+	
 
-	nextIDIndex = 0;
-	nextTemp = 0;
-	nextLabel = 0;
-    currentScope = NULL;
-	AddScope();
 
-    nextTokenIndex= 0;
-    qDebug ("Compiler Main");
-    tokenList = new QVector<Token*>;
     InitialLexicalAnalyzer();
     InitialSyntaxAnalyzer();
 
@@ -55,16 +43,12 @@ YYSTYPE CompilerMain::CreateLabel()
 	return labelName;
 }
 
-YYSTYPE CompilerMain::CreateTemp()
+YYSTYPE CompilerMain::CreateTemp(SymbolType type)
 {
-	nextTemp++;
-
 	std::string tempName = TEMPNAME+toString(nextTemp);
-	AddEntry(QString::fromStdString(tempName)
-		, Type_None);
+	if(AddEntry(QString::fromStdString(tempName), type))
+		nextTemp++;
 	return tempName;
-
-	
 }
 
 bool CompilerMain::IsTemp(YYSTYPE val)
@@ -78,10 +62,13 @@ void CompilerMain::RemoveTemp()
 }
 
 
-void CompilerMain::AddEntry(QString name, SymbolType type)
+bool CompilerMain::AddEntry(QString name, SymbolType type)
 {
 	if(IsInTable(name))
-		return ;
+	{
+		SetTempType(name,type);
+		return false;
+	}
 	nextIDIndex++;
 	qDebug()<<("Entry " + name + " is added to index " )<<nextIDIndex;
 	//qDebug()<<("Next Token is " + name);
@@ -91,6 +78,7 @@ void CompilerMain::AddEntry(QString name, SymbolType type)
 	entry->name = name;
 	entry->type = type;
 	currentScope->AddEntry(entry);
+	return true;
 }
 
 bool CompilerMain::IsInTable(QString name)
@@ -150,7 +138,7 @@ void CompilerMain::InitialLexicalAnalyzer()
     //lexicalAnalyzer->SetTokenInsertHandler(this,InsertTokenSelector(CompilerMain::InsertToken));
     //lexicalAnalyzer->StartLexing("SampleText.txt");
     //lexicalAnalyzer->StartLexing("Resources/SampleText_SimpleInt.txt");
-	InsertToken(new Token(Token_EndOfFile,"",0,0));
+	
 
 
 }
@@ -160,16 +148,7 @@ void CompilerMain::InitialSyntaxAnalyzer()
     syntaxAnalyzer = new SyntaxAnalyzer();
 
 	
-	EmitLine(".class public OutPut");
-	EmitLine(".super java/lang/Object");
-	EmitLine(".method public static main([Ljava/lang/String;)V");
-	EmitLine(".limit stack 250");
-	EmitLine(".limit locals 300");
-
-    //syntaxAnalyzer->Analyze();
-
-	EmitLine("   return");
-	EmitLine(".end method");
+	
 
 }
 
@@ -190,6 +169,38 @@ void CompilerMain::SetEditor(TextEditor *_editor)
 
 void CompilerMain::Compile()
 {
+	if(QFile::exists("OutPut.j"))
+		QFile::remove("OutPut.j");
+	output = new QFile("OutPut.j");
+	output->open( QIODevice::WriteOnly);
+	outStream = new QTextStream(output);
+
+	nextIDIndex = 0;
+	nextTemp = 0;
+	nextLabel = 0;
+    currentScope = NULL;
+	AddScope();
+
+    nextTokenIndex= 0;
+    qDebug ("Compiler Main");
+    tokenList = new QVector<Token*>;
+
+	if(QFile::exists("TEMPFILE"))
+		QFile::remove("TEMPFILE");
+	QFile input("TEMPFILE");
+	input.open(QIODevice::WriteOnly);
+	QTextStream inputStream(&input);
+	inputStream<<editor->toPlainText();
+	inputStream.flush();
+	input.close();
+
+	lexicalAnalyzer->StartLexing("TEMPFILE");
+
+
+	syntaxAnalyzer->StartParsing();
+
+	if(QFile::exists("TEMPFILE"))
+		QFile::remove("TEMPFILE");
 
 }
 
@@ -212,3 +223,33 @@ void CompilerMain::AddSyntaxError()
 
 }
 
+void CompilerMain::SetTempType(QString name, SymbolType type)
+{
+	SymbolEntry* tempSymbol = FindSymbolByName(name);
+	tempSymbol->type = type;
+}
+
+SymbolEntry* CompilerMain::FindSymbolByName(QString name)
+{
+	SymbolTable * cScope;
+	cScope = currentScope;
+	SymbolEntry* entry;
+    while(cScope!=NULL)
+	{
+		entry = cScope->FindSymbolByName(name);
+		if(entry!=NULL)
+			return entry;
+		cScope = cScope->parent;
+	}
+	return NULL;
+
+}
+
+SymbolType CompilerMain::GetType(YYSTYPE val)
+{
+	SymbolEntry * symbol = FindSymbolByName(QString::fromStdString(val));
+	if(symbol!=NULL)
+		return symbol->type;
+
+	return Type_None;
+}
